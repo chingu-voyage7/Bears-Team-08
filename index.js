@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const config = require('config');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -22,10 +23,17 @@ db.once('open', () => {
 });
 
 // ROUTES
-app.use('/', router);
+app.use('/index', router);
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(`${__dirname}/client/build/index.html`));
+});
 
 // MISC
 app.use(cors());
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 const port = config.SERVER_PORT || 8080;
 

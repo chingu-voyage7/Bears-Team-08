@@ -5,13 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "node ./index.js server $PORT",
+    "start": "node ./index.js",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
-    "server": "nodemon ./index.js server $PORT",
+    "server": "nodemon ./index.js",
     "server-install": "npm install",
     "client": "cd client && npm start",
     "client-install": "cd client && npm install",
-    "install-all": "concurrently --kill-others-on-fail  \"npm run server-install\" \"npm run client-install\""
+    "client-build": "cd client && npm build",
+    "install-all": "concurrently --kill-others-on-fail  \"npm run server-install\" \"npm run client-install\"",
+    "heroku-postbuild": "concurrently --kill-others-on-fail  \"npm run client-install\" \"npm run client-build\" "
   },
   "repository": {
     "type": "git",
