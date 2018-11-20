@@ -35,6 +35,6 @@ app.get('*', (req, res) => {
 app.use(cors());
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-const port = config.SERVER_PORT || 8080;
+const port = process.env.PORT || config.SERVER_PORT;
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
