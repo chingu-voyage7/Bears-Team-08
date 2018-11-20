@@ -14,6 +14,10 @@ mongoose.connect(
 );
 const app = express();
 
+// MISC
+app.use(cors());
+app.use(express.static(path.join(__dirname, 'client/build')));
+
 // DB
 const db = mongoose.connection;
 
@@ -30,10 +34,6 @@ app.use('/index', router);
 app.get('*', (req, res) => {
   res.sendFile(path.join(`${__dirname}/client/build/index.html`));
 });
-
-// MISC
-app.use(cors());
-app.use(express.static(path.join(__dirname, 'client/build')));
 
 const port = process.env.PORT || config.SERVER_PORT;
 
