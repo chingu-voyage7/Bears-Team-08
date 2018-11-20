@@ -33,7 +33,7 @@ app.get('*', (req, res) => {
 
 // MISC
 app.use(cors());
-app.use('/static', express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 const port = process.env.PORT || config.SERVER_PORT;
 
