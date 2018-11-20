@@ -1,0 +1,7 @@
+{
+  "SERVER_PORT": 8080,
+  "mongoDB": {
+    "url": "mongodb://bears08:chingu08@ds113134.mlab.com:13134/bears-08-production",
+    "type": "production database"
+  }
+}

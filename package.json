@@ -1,0 +1,63 @@
+{
+  "name": "bears-team-08",
+  "version": "1.0.0",
+  "description": "Mercado Livre Clone",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "start": "node ./index.js server $PORT",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "server": "nodemon ./index.js server $PORT",
+    "server-install": "npm install",
+    "client": "cd client && npm start",
+    "client-install": "cd client && npm install",
+    "install-all": "concurrently --kill-others-on-fail  \"npm run server-install\" \"npm run client-install\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chingu-voyage7/Bears-Team-08.git"
+  },
+  "author": "Bears Team 08",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chingu-voyage7/Bears-Team-08/issues"
+  },
+  "homepage": "https://github.com/chingu-voyage7/Bears-Team-08#readme",
+  "dependencies": {
+    "babel-preset-env": "^1.7.0",
+    "concurrently": "^4.1.0",
+    "config": "^2.0.1",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "mongoose": "^5.3.12",
+    "nodemon": "^1.18.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.6",
+    "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "9.0.0",
+    "eslint": "5.6.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-babel": "^5.3.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-prettier": "^3.0.0",
+    "husky": "^1.1.4",
+    "jest": "^23.6.0",
+    "lint-staged": "^8.0.5",
+    "prettier": "^1.15.2",
+    "validate-commit-msg": "^2.14.0"
+  },
+  "jest": {
+    "verbose": true,
+    "collectCoverageFrom": [
+      "__tests__/**/*.{js.jsx}"
+    ]
+  },
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "prettier --write --single-quote --no-semi",
+      "eslint --fix",
+      "git add"
+    ]
+  }
+}
