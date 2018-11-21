@@ -1,50 +1,47 @@
-/* eslint-disable no-underscore-dangle */
+/* eslint-disable func-names, space-before-function-paren */
 
 const mongoose = require('mongoose');
-const crypto = require('crypto');
-const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+const timestamps = require('mongoose-timestamp');
 
-const { Schema } = mongoose;
-
-const UsersSchema = new Schema({
-  email: String,
-  hash: String,
-  salt: String,
+const saltRounds = 10;
+const UserSchema = new mongoose.Schema({
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  products: { type: Array },
+  location: { type: String },
+  firstName: { type: String },
+  lastName: { type: String },
 });
 
-UsersSchema.methods.setPassword = password => {
-  this.salt = crypto.randomBytes(16).toString('hex');
-  this.hash = crypto
-    .pbkdf2Sync(password, this.salt, 10000, 512, 'sha512')
-    .toString('hex');
-};
+UserSchema.plugin(timestamps);
 
-UsersSchema.methods.validatePassword = password => {
-  const hash = crypto
-    .pbkdf2Sync(password, this.salt, 10000, 512, 'sha512')
-    .toString('hex');
-  return this.hash === hash;
-};
-
-UsersSchema.methods.generateJWT = () => {
-  const today = new Date();
-  const expirationDate = new Date(today);
-  expirationDate.setDate(today.getDate() + 60);
-
-  return jwt.sign(
-    {
-      email: this.email,
-      id: this._id,
-      exp: parseInt(expirationDate.getTime() / 1000, 10),
-    },
-    'secret',
-  );
-};
-
-UsersSchema.methods.toAuthJSON = () => ({
-  _id: this._id,
-  email: this.email,
-  token: this.generateJWT(),
+UserSchema.pre('save', function(next) {
+  // Check if document is new or a new password has been set
+  if (this.isNew || this.isModified('password')) {
+    // Saving reference to this because of changing scopes
+    const document = this;
+    bcrypt.hash(document.password, saltRounds, (err, hashedPassword) => {
+      if (err) {
+        next(err);
+      } else {
+        document.password = hashedPassword;
+        next();
+      }
+    });
+  } else {
+    next();
+  }
 });
 
-mongoose.model('Users', UsersSchema);
+UserSchema.methods.isCorrectPassword = function(password, callback) {
+  bcrypt.compare(password, this.password, (err, same) => {
+    if (err) {
+      callback(err);
+    } else {
+      callback(err, same);
+    }
+  });
+};
+
+module.exports = mongoose.model('User', UserSchema);

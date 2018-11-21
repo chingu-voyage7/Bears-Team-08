@@ -3,5 +3,7 @@
   "mongoDB": {
     "url": "mongodb://bears08:chingu08@ds113134.mlab.com:13134/bears-08-production",
     "type": "production database"
-  }
+  },
+  "reactPath": "client/build/index.html",
+  "reactType": "build"
 }
