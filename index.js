@@ -12,6 +12,11 @@ mongoose.connect(
   mongoDB,
   { useNewUrlParser: true },
 );
+
+// MODELS
+require('./api/models');
+require('./config/passport');
+
 const app = express();
 
 // MISC
