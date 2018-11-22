@@ -9,9 +9,9 @@ const UserSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   products: { type: Array },
-  location: { type: String },
   firstName: { type: String },
   lastName: { type: String },
+  confirmed: { type: Boolean },
 });
 
 UserSchema.plugin(timestamps);

@@ -8,8 +8,15 @@ const { User } = models;
 
 // POST route to register a user
 router.post('/register', (req, res) => {
-  const { email, password } = req.body;
-  const user = new User({ email, password });
+  const { email, password, firstName, lastName } = req.body; //  eslint-disable-line
+  const user = new User({
+    email,
+    password,
+    confirmed: false,
+    products: [],
+    firstName,
+    lastName,
+  });
   user.save(err => {
     if (err) {
       console.log(err);

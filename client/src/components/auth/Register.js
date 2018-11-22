@@ -1,0 +1,90 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import withStyles from '@material-ui/core/styles/withStyles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Avatar from '@material-ui/core/Avatar';
+import LockIcon from '@material-ui/icons/LockOutlined';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import RegistrationForm from './RegistrationForm';
+// import { Link } from 'react-router-dom';
+
+const styles = theme => ({
+  appBar: {
+    position: 'relative',
+  },
+  layout: {
+    width: 'auto',
+    marginLeft: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 2,
+    [theme.breakpoints.up(600 + theme.spacing.unit * 2 * 2)]: {
+      width: 600,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+    },
+  },
+  paper: {
+    marginTop: theme.spacing.unit * 8,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
+      .spacing.unit * 3}px`,
+  },
+  stepper: {
+    padding: `${theme.spacing.unit * 3}px 0 ${theme.spacing.unit * 5}px`,
+  },
+  buttons: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+  button: {
+    marginTop: theme.spacing.unit * 3,
+    marginLeft: theme.spacing.unit,
+  },
+  avatar: {
+    margin: theme.spacing.unit,
+    backgroundColor: theme.palette.secondary.main,
+  },
+  submit: {
+    marginTop: '5vh',
+  },
+});
+
+class Register extends React.Component {
+  state = {};
+
+  _handleSubmit = (text) => {
+    console.log(text);
+  };
+
+  render() {
+    const { classes } = this.props;
+
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <main className={classes.layout}>
+          <Paper className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Register
+            </Typography>
+            <RegistrationForm
+              className={classes.form}
+              handleSubmit={this._handleSubmit}
+            />
+          </Paper>
+        </main>
+      </React.Fragment>
+    );
+  }
+}
+
+Register.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(Register);
