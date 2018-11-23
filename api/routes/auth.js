@@ -1,5 +1,6 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const fetch = require('isomorphic-fetch');
 
 const router = express.Router();
 const models = require('../models');
@@ -7,7 +8,7 @@ const models = require('../models');
 const { User } = models;
 
 // POST route to register a user
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
   const { email, password, firstName, lastName } = req.body; //  eslint-disable-line
   const user = new User({
     email,
@@ -17,7 +18,7 @@ router.post('/register', (req, res) => {
     firstName,
     lastName,
   });
-  user.save(err => {
+  await user.save(err => {
     if (err) {
       console.log(err);
       res.status(500).send('Error registering new user please try again.');
@@ -25,6 +26,34 @@ router.post('/register', (req, res) => {
       res.status(200).send('Welcome to the club!');
     }
   });
+
+  // const mailchimpInstance = process.env.MAIL_CHIMP_SERVER;
+
+  // const listUniqueId = process.env.MAIL_CHIMP_LIST_ID;
+
+  // const mailchimpApiKey = process.env.MAIL_CHIMP_API_KEY;
+
+  // const url = `https://${mailchimpInstance}.api.mailchimp.com/3.0/lists/${listUniqueId}'/members/`;
+
+  // const options = {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json; charset=utf-8',
+  //     Authorization: `Basic ${new Buffer(`any: ${mailchimpApiKey}`).toString( // eslint-disable-line
+  //       'base64',
+  //     )}`,
+  //   },
+  //   body: {
+  //     email_address: email,
+  //     status: 'confirmed',
+  //     merge_fields: {
+  //       FNAME: firstName,
+  //       LNAME: lastName,
+  //     },
+  //   },
+  // };
+
+  // await fetch(url, options);
 });
 
 router.post('/signin', (req, res) => {
