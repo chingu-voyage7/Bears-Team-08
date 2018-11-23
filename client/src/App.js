@@ -1,15 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { UserProvider } from '../src/context/User';
 import Header from './components/header/Header';
 import Main from './components/Main';
 
 const App = () => (
-  <Router>
-    <div className="App">
-      <Header />
-      <Main />
-    </div>
-  </Router>
+  <UserProvider>
+    <Router>
+      <div className="App">
+          <Header />
+          <Main />
+      </div>
+    </Router>
+  </UserProvider>
   
 );
 

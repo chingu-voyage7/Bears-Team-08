@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Avatar from '@material-ui/core/Avatar';
@@ -46,23 +47,62 @@ const styles = theme => ({
     margin: theme.spacing.unit,
     backgroundColor: theme.palette.secondary.main,
   },
-  submit: {
-    marginTop: '5vh',
-  },
 });
 
-class Register extends React.Component {
-  state = {};
-
-  _handleSubmit = (text) => {
-    console.log(text);
+class Register extends Component {
+  state = {
+    redirect: false,
   };
+
+  _setRedirect = () => {
+    this.setState({
+      redirect: true,
+    });
+  };
+
+  _renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to="/confirm-email" />;
+    }
+  };
+
+  _handleSubmit = async user => {
+    const validated = await this._validateForm(user);
+    const options = {
+      method: 'POST',
+      mode: 'cors',
+      cache: 'no-cache',
+      credentials: 'same-origin',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+      redirect: 'follow',
+      referrer: 'no-referrer',
+      body: JSON.stringify(user),
+    };
+
+    if (validated) {
+
+      const res = await fetch(`http://localhost:3000/api/auth/register`, options);
+      console.log(res);
+      if (res.status === 200) {
+        this._setRedirect();
+      }
+    }
+  };
+
+  _validateForm = async user => {
+    // fill in later
+    console.log(user, 'validate')
+    return true;
+  }
 
   render() {
     const { classes } = this.props;
 
     return (
       <React.Fragment>
+        { this._renderRedirect() }
         <CssBaseline />
         <main className={classes.layout}>
           <Paper className={classes.paper}>
@@ -75,6 +115,7 @@ class Register extends React.Component {
             <RegistrationForm
               className={classes.form}
               handleSubmit={this._handleSubmit}
+              validateForm={this._validateForm}
             />
           </Paper>
         </main>

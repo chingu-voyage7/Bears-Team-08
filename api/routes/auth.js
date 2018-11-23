@@ -27,7 +27,7 @@ router.post('/register', (req, res) => {
   });
 });
 
-router.post('/authenticate', (req, res) => {
+router.post('/signin', (req, res) => {
   const secret = 'shhh';
   const { email, password } = req.body;
   User.findOne({ email }, (err, user) => {

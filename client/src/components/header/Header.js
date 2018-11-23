@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -7,13 +7,13 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormGroup from '@material-ui/core/FormGroup';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
+import Snackbar from '@material-ui/core/Snackbar';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../../context/User';
+import green from '@material-ui/core/colors/green';
 
 const styles = {
   root: {
@@ -26,107 +26,111 @@ const styles = {
     marginLeft: -12,
     marginRight: 20,
   },
+  snack: {
+    backgroundColor: green[600],
+  },
 };
 
-class MenuAppBar extends React.Component {
-  state = {
-    auth: true,
-    anchorEl: null,
+const MenuAppBar = ({ classes }) => {
+  const vertical = 'top';
+  const horizontal = 'center';
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [openSnack, setSnack] = useState(false);
+  let {
+    state: { isLoggedIn },
+    dispatch,
+  } = useContext(UserContext);
+  const open = Boolean(anchorEl);
+
+  const handleMenu = event => {
+    setAnchorEl(event.currentTarget);
   };
 
-  handleChange = event => {
-    this.setState({ auth: event.target.checked });
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
-  handleMenu = event => {
-    this.setState({ anchorEl: event.currentTarget });
+  const signOut = () => {
+    dispatch({ type: 'signOut' });
+    setSnack(true);
+    setAnchorEl(null);
   };
 
-  handleClose = () => {
-    this.setState({ anchorEl: null });
+  const closeSnack = () => {
+    setSnack(false);
   };
 
-  signOut = () => {
-    this.setState({ anchorEl: null, auth: false });
-  };
-
-  render() {
-    const { classes } = this.props;
-    const { auth, anchorEl } = this.state;
-    const open = Boolean(anchorEl);
-
-    return (
-      <div className={classes.root}>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton
-              className={classes.menuButton}
-              color="inherit"
-              aria-label="Menu"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" color="inherit" className={classes.grow}>
-              Bears Team 08
-            </Typography>
-            {!auth && (
-              <div>
-                <Button component={Link} to="/register" color="inherit">
-                  Register
-                </Button>
-                <Button component={Link} to="/signin" color="inherit">
-                  Sign In
-                </Button>
-              </div>
-            )}
-            {auth && (
-              <div>
-                <IconButton
-                  aria-owns={open ? 'menu-appbar' : undefined}
-                  aria-haspopup="true"
-                  onClick={this.handleMenu}
-                  color="inherit"
-                >
-                  <AccountCircle />
-                </IconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={open}
-                  onClose={this.handleClose}
-                >
-                  <MenuItem onClick={this.handleClose}>Profile</MenuItem>
-                  <MenuItem onClick={this.handleClose}>My account</MenuItem>
-                  <MenuItem onClick={this.signOut}>Sign Out</MenuItem>
-                </Menu>
-              </div>
-            )}
-          </Toolbar>
-        </AppBar>
-        <FormGroup>
-          <FormControlLabel
-            control={
-              <Switch
-                checked={auth}
-                onChange={this.handleChange}
-                aria-label="LoginSwitch"
-              />
-            }
-            label={auth ? 'Logout' : 'Login'}
-          />
-        </FormGroup>
-      </div>
-    );
-  }
-}
+  return (
+    <div className={classes.root}>
+      <AppBar position="static">
+        <Snackbar
+          anchorOrigin={{ vertical, horizontal }}
+          open={openSnack}
+          autoHideDuration={1500}
+          onClose={closeSnack}
+          ContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          className={classes.snack}
+          message={<span id="message-id">Signed out successfully!</span>}
+        />
+        <Toolbar>
+          <IconButton
+            className={classes.menuButton}
+            color="inherit"
+            aria-label="Menu"
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" color="inherit" className={classes.grow}>
+            Bears Team 08
+          </Typography>
+          {!isLoggedIn && (
+            <div>
+              <Button component={Link} to="/register" color="inherit">
+                Register
+              </Button>
+              <Button component={Link} to="/signin" color="inherit">
+                Sign In
+              </Button>
+            </div>
+          )}
+          {isLoggedIn && (
+            <div>
+              <IconButton
+                aria-owns={open ? 'menu-appbar' : undefined}
+                aria-haspopup="true"
+                onClick={handleMenu}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={open}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={signOut}>Sign Out</MenuItem>
+              </Menu>
+            </div>
+          )}
+        </Toolbar>
+      </AppBar>
+    </div>
+  );
+};
 
 MenuAppBar.propTypes = {
   classes: PropTypes.object.isRequired,

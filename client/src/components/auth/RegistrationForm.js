@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
-import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 
 const RegistrationForm = props => {
@@ -14,6 +13,7 @@ const RegistrationForm = props => {
         <Grid item xs={12} sm={6}>
           <TextField
             required
+            type="text"
             id="firstName"
             name="firstName"
             label="First name"
@@ -27,6 +27,7 @@ const RegistrationForm = props => {
         <Grid item xs={12} sm={6}>
           <TextField
             required
+            type="text"
             id="lastName"
             name="lastName"
             label="Last name"
@@ -42,6 +43,7 @@ const RegistrationForm = props => {
             required
             id="email"
             name="email"
+            type="email"
             label="Email Address"
             fullWidth
             autoComplete="email"
@@ -53,6 +55,7 @@ const RegistrationForm = props => {
         <Grid item xs={12} sm={6}>
           <TextField
             required
+            type="password"
             id="password"
             name="password"
             label="Password"
@@ -65,6 +68,7 @@ const RegistrationForm = props => {
         <Grid item xs={12} sm={6}>
           <TextField
             required
+            type="password"
             id="confirmPassword"
             name="confirmPassword"
             label="Confirm Password"
@@ -76,13 +80,12 @@ const RegistrationForm = props => {
         </Grid>
       </Grid>
       <Button
-        component={Link}
-        to="/confirm-email"
         type="submit"
         fullWidth
         variant="contained"
         color="primary"
         onClick={() => handleSubmit(user)}
+        style={{ marginTop: '2vh' }}
       >
         Register
       </Button>
