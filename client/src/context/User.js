@@ -3,7 +3,7 @@ import * as React from 'react';
 let UserContext = React.createContext();
 
 let initialState = {
-  isLoggedIn: true,
+  isLoggedIn: false,
   email: '',
 };
 
