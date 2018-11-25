@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -49,10 +49,46 @@ const styles = theme => ({
 });
 
 const ForgotPassword = props => {
+  const [email, setEmail] = useState();
+  const [redirect, setRedirect] = useState(false);
   const { classes } = props;
+
+  const _setRedirect = () => {
+    setRedirect(true);
+  };
+
+  const _renderRedirect = () => {
+    if (redirect) {
+      return <Redirect to="/confirm-email" />;
+    }
+  };
+
+  const _handleSubmit = async e => {
+    await e.preventDefault();
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+      body: JSON.stringify({ email }),
+    };
+
+    console.log(options);
+    const res = await fetch(
+      `http://localhost:3000/api/auth/reset-password`,
+      options,
+    );
+
+    console.log(res);
+
+    // if (res.status === 200) {
+    //   await _setRedirect();
+    // }
+  };
 
   return (
     <main className={classes.main}>
+      {_renderRedirect()}
       <CssBaseline />
       <Paper className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -68,17 +104,22 @@ const ForgotPassword = props => {
         <form className={classes.form}>
           <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="email">Email Address</InputLabel>
-            <Input id="email" name="email" autoComplete="email" autoFocus />
+            <Input
+              id="email"
+              name="email"
+              autoComplete="email"
+              autoFocus
+              onChange={e => setEmail(e.target.value)}
+            />
           </FormControl>
 
           <Button
-            component={Link}
-            to="/confirm-email"
             type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={e => _handleSubmit(e)}
           >
             Reset Password
           </Button>

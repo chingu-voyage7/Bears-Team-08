@@ -82,27 +82,32 @@ class Register extends Component {
     };
 
     if (validated) {
-
-      const res = await fetch(`http://localhost:3000/api/auth/register`, options);
-      console.log(res);
+      const res = await fetch(
+        `http://localhost:3000/api/auth/register`,
+        options,
+      );
       if (res.status === 200) {
-        this._setRedirect();
+        await fetch(
+          `http://localhost:3000/api/auth/email-confirmation`,
+          options,
+        );
+        // await this._setRedirect();
       }
     }
   };
 
   _validateForm = async user => {
     // fill in later
-    console.log(user, 'validate')
+    console.log(user, 'validate');
     return true;
-  }
+  };
 
   render() {
     const { classes } = this.props;
 
     return (
       <React.Fragment>
-        { this._renderRedirect() }
+        {this._renderRedirect()}
         <CssBaseline />
         <main className={classes.layout}>
           <Paper className={classes.paper}>
