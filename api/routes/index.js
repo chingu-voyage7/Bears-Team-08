@@ -1,4 +1,7 @@
 const express = require('express');
+const authRouter = require('./auth');
+const withAuth = require('../utils/middleware');
+
 const Item = require('../models/item');
 const itemController = require('../controllers/item-controller');
 
@@ -7,9 +10,16 @@ const DB = connectToDB();
 
 const router = express.Router();
 
-router.get('/index', (req, res) => {
-  res.send('Bears 08 Home Page');
+router.get('/home', (req, res) => {
+  res.send('Welcome!');
 });
+
+router.get('/secret', withAuth, (req, res) => {
+  res.send('The password is potato');
+});
+
+router.use('/auth', authRouter);
+
 
 // Items
 // To do: Link to authorization system
