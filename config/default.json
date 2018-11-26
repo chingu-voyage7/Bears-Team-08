@@ -1,9 +1,0 @@
-{
-  "SERVER_PORT": 8080,
-  "mongoDB": {
-    "url": "mongodb://bears08:chingu08@ds141889.mlab.com:41889/bears-08-development",
-    "type": "development database"
-  },
-  "reactPath": "client/public/index.html",
-  "reactType": "public"
-}

@@ -1,5 +1,7 @@
 const express = require('express');
 const path = require('path');
+const config = require('./config');
+const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
