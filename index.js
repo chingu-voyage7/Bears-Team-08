@@ -19,7 +19,6 @@ const app = express();
 
 // MIDDLEWARE
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors());
 app.use(express.static(path.join(__dirname, `client/${reactType}`)));
@@ -42,7 +41,7 @@ db.once('open', () => {
 });
 
 // ROUTES
-app.use(router);
+app.use('/api', router);
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
@@ -52,8 +51,4 @@ app.get('*', (req, res) => {
 
 const port = process.env.PORT || serverPort;
 
-
-app.listen(port, () => console.log(`App listening on port ${port}!\n`));
-
-// Exporting app to be able to require it in the tests
-module.exports = app;
+app.listen(port, () => console.log(`App listening on port ${port}!`));
