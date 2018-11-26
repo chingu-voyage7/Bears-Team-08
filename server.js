@@ -15,8 +15,6 @@ const router = require('./api/routes');
 require('./api/models');
 require('./config/passport');
 
-const port = process.env.PORT || config.serverPort;
-
 const app = express();
 
 // MIDDLEWARE

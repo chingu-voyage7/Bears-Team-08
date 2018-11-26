@@ -72,8 +72,7 @@
     "random-words": "^1.1.0",
     "rosie": "^2.0.1",
     "sinon": "^7.1.1",
-    "validate-commit-msg": "^2.14.0",
-    "nodemon": "^1.18.6"
+    "validate-commit-msg": "^2.14.0"
   },
   "jest": {
     "verbose": true,
