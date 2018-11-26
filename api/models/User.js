@@ -11,6 +11,9 @@ const UserSchema = new mongoose.Schema({
   products: { type: Array },
   firstName: { type: String },
   lastName: { type: String },
+  confirmationToken: {
+    type: String,
+  },
   confirmed: { type: Boolean },
 });
 

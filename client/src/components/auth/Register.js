@@ -8,7 +8,6 @@ import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import RegistrationForm from './RegistrationForm';
-// import { Link } from 'react-router-dom';
 
 const styles = theme => ({
   appBar: {
@@ -55,6 +54,7 @@ class Register extends Component {
   };
 
   _setRedirect = () => {
+    console.log('redirect');
     this.setState({
       redirect: true,
     });
@@ -87,11 +87,12 @@ class Register extends Component {
         options,
       );
       if (res.status === 200) {
-        await fetch(
+        const newRes = await fetch(
           `http://localhost:3000/api/auth/email-confirmation`,
           options,
         );
-        // await this._setRedirect();
+        console.log(newRes, 'res');
+        await this._setRedirect();
       }
     }
   };
