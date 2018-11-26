@@ -70,14 +70,9 @@ class Register extends Component {
     const validated = await this._validateForm(user);
     const options = {
       method: 'POST',
-      mode: 'cors',
-      cache: 'no-cache',
-      credentials: 'same-origin',
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
       },
-      redirect: 'follow',
-      referrer: 'no-referrer',
       body: JSON.stringify(user),
     };
 

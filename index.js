@@ -1,20 +1,14 @@
 const express = require('express');
 const path = require('path');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 const { mongoDB, reactType, serverPort } = require('./config');
+const db = require('./database');
 
 const router = require('./api/routes');
-
-mongoose.connect(
-  mongoDB.url,
-  { useNewUrlParser: true },
-);
-
 // MODELS
 require('./api/models');
 require('./config/passport');
@@ -38,7 +32,6 @@ app.use(passport.initialize()); // Used to initialize passport
 app.use(passport.session()); // Used to persist login sessions
 
 // DB
-const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => {

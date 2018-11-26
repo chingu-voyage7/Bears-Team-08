@@ -7,13 +7,13 @@
     "test": "jest",
     "start": "node ./index.js",
     "dev": "NODE_ENV=development && concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
-    "dev-windows": "set NODE_ENV=development && concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "dev:windows": "set NODE_ENV=development && concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "server": "nodemon ./index.js",
-    "server-install": "npm install",
+    "server:install": "npm install",
     "client": "cd client && npm start",
-    "client-install": "cd client && npm install",
-    "client-build": "cd client && npm run build",
-    "install-all": "concurrently --kill-others-on-fail  \"npm run server-install\" \"npm run client-install\"",
+    "client:install": "cd client && npm install",
+    "client:build": "cd client && npm run build",
+    "install:all": "concurrently --kill-others-on-fail  \"npm run server-install\" \"npm run client-install\"",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "repository": {

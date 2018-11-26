@@ -74,14 +74,6 @@ AuthController.confirmEmail = async req => {
 
   const token = jwt.sign(info, secret);
 
-  // User.findOneAndUpdate(
-  //   { email },
-  //   { $set: { token } },
-  //   {
-  //     returnNewDocument: true,
-  //   },
-  // );
-
   const mailOptions = {
     from: 'noreply@bearsteam08@gmail.com',
     to: email,
