@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const models = require('../models');
+const db = require('../../database');
 
 const { User } = models;
 
@@ -73,6 +74,20 @@ AuthController.confirmEmail = async req => {
   info.expiry = new Date(new Date().getTime() + 24 * 60 * 60 * 1000);
 
   const token = jwt.sign(info, secret);
+
+  await db
+    .collection('users')
+    .findOneAndUpdate(
+      { email },
+      { $set: { confirmationToken: token } },
+      (err, doc) => {
+        if (err) {
+          console.log('Something wrong when updating data!');
+        }
+
+        console.log(doc);
+      },
+    );
 
   const mailOptions = {
     from: 'noreply@bearsteam08@gmail.com',

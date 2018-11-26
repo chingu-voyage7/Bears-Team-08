@@ -82,12 +82,11 @@ class Register extends Component {
         options,
       );
       if (res.status === 200) {
-        const newRes = await fetch(
+        await this._setRedirect();
+        await fetch(
           `http://localhost:3000/api/auth/email-confirmation`,
           options,
         );
-        console.log(newRes, 'res');
-        await this._setRedirect();
       }
     }
   };
