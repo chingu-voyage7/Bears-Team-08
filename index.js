@@ -1,13 +1,12 @@
 const express = require('express');
 const path = require('path');
 const config = require('./config');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
-const { mongoDB, reactType, serverPort } = require('./config');
+const { reactType, serverPort } = config;
 const db = require('./database');
 
 const router = require('./api/routes');
