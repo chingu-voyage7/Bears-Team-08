@@ -15,9 +15,9 @@ const Main = () => (
     <Route path="/signin" component={SignIn} />
     <Route path="/register" component={Register} />
     <Route path="/forgot-password" component={ForgotPassword} />
-    <Route path="/change-password" component={ChangePassword} />
+    <Route path="/change-password/:email/:token" component={ChangePassword} />
     <Route path="/confirm-email" component={EmailConfirmation} />
-    <Route path="/success-email" component={EmailSuccess} />
+    <Route path="/success-email/:email/:token" component={EmailSuccess} />
     <Route path="/success-password" component={PasswordSuccess} />
     <Route exact path="/" component={Home} />
   </div>
