@@ -83,8 +83,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "validate-commit-msg"
+      "pre-commit": "lint-staged"
     }
   },
   "jest": {
@@ -99,18 +98,5 @@
       "eslint --fix",
       "git add"
     ]
-  },
-  "validate-commit-msg": {
-    "types": [
-      "UPDATE",
-      "CREATE",
-      "REMOVE",
-      "FIX"
-    ],
-    "warnOnFail": false,
-    "maxSubjectLength": 100,
-    "subjectPattern": "^[A-Z]+-[0-9]+ - .*",
-    "subjectPatternErrorMsg": "Subject must be in format 'CMS-123 - Commit message'",
-    "helpMessage": ""
   }
 }
