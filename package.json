@@ -67,6 +67,7 @@
     "eslint-plugin-babel": "^5.3.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-prettier": "^3.0.0",
+    "eslint-plugin-react": "^7.11.1",
     "faker": "^4.1.0",
     "husky": "^1.1.4",
     "jest": "^23.6.0",
@@ -80,6 +81,12 @@
     "sinon": "^7.1.1",
     "validate-commit-msg": "^2.14.0"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commitmsg": "validate-commit-msg"
+    }
+  },
   "jest": {
     "verbose": true,
     "collectCoverageFrom": [
@@ -92,5 +99,18 @@
       "eslint --fix",
       "git add"
     ]
+  },
+  "validate-commit-msg": {
+    "types": [
+      "UPDATE",
+      "CREATE",
+      "REMOVE",
+      "FIX"
+    ],
+    "warnOnFail": false,
+    "maxSubjectLength": 100,
+    "subjectPattern": "^[A-Z]+-[0-9]+ - .*",
+    "subjectPatternErrorMsg": "Subject must be in format 'CMS-123 - Commit message'",
+    "helpMessage": ""
   }
 }

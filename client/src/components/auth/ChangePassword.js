@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -65,7 +65,6 @@ const ForgotPassword = props => {
           Please enter your new password and confirm.
         </Typography>
         <form className={classes.form}>
-
           <FormControl margin="normal" required fullWidth>
             <InputLabel htmlFor="newPassword">New Password</InputLabel>
             <Input
