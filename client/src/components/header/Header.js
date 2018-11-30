@@ -34,7 +34,7 @@ const styles = {
 const MenuAppBar = ({ classes }) => {
   const vertical = 'top';
   const horizontal = 'center';
-
+  
   const [anchorEl, setAnchorEl] = useState(null);
   const [openSnack, setSnack] = useState(false);
   let {
@@ -53,6 +53,7 @@ const MenuAppBar = ({ classes }) => {
 
   const signOut = () => {
     dispatch({ type: 'signOut' });
+    localStorage.setItem('user', null);
     setSnack(true);
     setAnchorEl(null);
   };

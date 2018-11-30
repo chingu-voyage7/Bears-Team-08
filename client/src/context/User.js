@@ -10,6 +10,8 @@ let initialState = {
 
 let reducer = (state, action) => {
   switch (action.type) {
+    case 'getUser':
+      return { ...action.payload.user, ...state }
     case 'signIn':
       return { ...state, isLoggedIn: true };
     case 'update':
