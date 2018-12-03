@@ -6,6 +6,7 @@
 #
 # misc
 .DS_Store
+.env
 .env.local
 .env.development.local
 .env.test.local
@@ -16,3 +17,4 @@ npm-debug.log*
 !.gitkeep
 npm-debug.log
 .DS_Store
+!.env.example

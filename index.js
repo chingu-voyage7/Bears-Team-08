@@ -1,40 +1,51 @@
 const express = require('express');
 const path = require('path');
-const config = require('config');
-const mongoose = require('mongoose');
 const cors = require('cors');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+const cookieSession = require('cookie-session');
+const passport = require('passport');
+const config = require('./config');
+
+const { reactType, serverPort } = config;
 
 const router = require('./api/routes');
 
-const mongoDB = config.mongoDB.url;
+// MODELS
+require('./api/models');
+require('./config/passport');
 
-mongoose.connect(
-  mongoDB,
-  { useNewUrlParser: true },
-);
 const app = express();
 
-// MISC
+// MIDDLEWARE
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(cors());
-app.use(express.static(path.join(__dirname, 'client/build')));
+app.use(express.static(path.join(__dirname, `client/${reactType}`)));
+// cookieSession config
+app.use(
+  cookieSession({
+    maxAge: 24 * 60 * 60 * 1000, // One day in milliseconds
+    keys: ['randomstringhere'],
+  }),
+);
 
-// DB
-const db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', () => {
-  console.log(`mongoDB ${config.mongoDB.type} connected`);
-});
+app.use(passport.initialize()); // Used to initialize passport
+app.use(passport.session()); // Used to persist login sessions
 
 // ROUTES
-app.use('/index', router);
+app.use('/api', router);
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
 app.get('*', (req, res) => {
-  res.sendFile(path.join(`${__dirname}/client/build/index.html`));
+  res.sendFile(path.join(__dirname, `client/${reactType}{/index.html`));
 });
 
-const port = process.env.PORT || config.SERVER_PORT;
+const port = process.env.PORT || serverPort;
 
-app.listen(port, () => console.log(`App listening on port ${port}!`));
+app.listen(port, () => console.log(`App listening on port ${port}!\n`));
+
+// Exporting app to be able to require it in the tests
+module.exports = app;
