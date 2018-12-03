@@ -53,9 +53,6 @@ const ForgotPassword = props => {
   const [redirect, setRedirect] = useState(false);
   const { classes } = props;
 
-  const _setRedirect = () => {
-    setRedirect(true);
-  };
 
   const _renderRedirect = () => {
     if (redirect) {
@@ -73,18 +70,15 @@ const ForgotPassword = props => {
       body: JSON.stringify({ email }),
     };
 
-    console.log(options);
     const res = await fetch(
       `http://localhost:3000/api/auth/reset-password`,
       options,
     );
 
-    console.log(res);
-
-    // if (res.status === 200) {
-    //   await _setRedirect();
-    // }
+    if (res.status === 200) {
+      setRedirect(true);
   };
+}
 
   return (
     <main className={classes.main}>

@@ -16,12 +16,6 @@
     "install:all": "concurrently --kill-others-on-fail  \"npm run server:install\" \"npm run client:install\"",
     "heroku-postbuild": "cd client && npm install && npm run build"
   },
-  "proxy": {
-    "/api": {
-      "target": "http://[::1]:8080",
-      "secure": false
-    }
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/chingu-voyage7/Bears-Team-08.git"

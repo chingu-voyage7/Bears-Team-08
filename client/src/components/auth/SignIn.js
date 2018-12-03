@@ -83,6 +83,7 @@ const SignIn = props => {
 
     if (res.status === 200) {
       await dispatch({ type: 'signIn' });
+      await localStorage.setItem('user', JSON.stringify({ ...state, isLoggedIn: true }));
       await setRedirect(true);
     }
   };
