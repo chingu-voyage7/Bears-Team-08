@@ -48,10 +48,10 @@ const styles = theme => ({
 
 const data = {
   title: 'Apple Macbook Air 13 I5 1.8ghz 8gb 128gb Ssd Mqd32',
-  state: 'Novo',
-  nSold: 9,
-  price: 5599.0,
-  times: 12,
+  state: 'Novo', // new or not
+  nSold: 9, // number of items sold
+  price: 5599.0, 
+  times: 12, // how many times it can be paid by
 };
 
 const BuyItem = props => {
@@ -117,7 +117,7 @@ const BuyItem = props => {
                   color="primary"
                   className={classes.button}
                 >
-                  Primary
+                  Comprar Agora!
                 </Button>
 
                 <Button
@@ -125,7 +125,7 @@ const BuyItem = props => {
                   color="primary"
                   className={classes.button}
                 >
-                  Primary
+                  Adcionar ao carrinho
                 </Button>
               </div>
             </Paper>
