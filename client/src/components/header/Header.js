@@ -121,8 +121,7 @@ const MenuAppBar = ({ classes }) => {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem component={Link} to="/profile">Profile</MenuItem>
                 <MenuItem onClick={signOut}>Sign Out</MenuItem>
               </Menu>
             </div>
