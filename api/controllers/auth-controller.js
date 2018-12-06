@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const models = require('../models');
 const db = require('../../database');
@@ -17,6 +18,7 @@ AuthController.register = async (req, res) => {
     firstName,
     lastName,
     confirmationToken: '',
+    confirmationPasswordToken: '',
   });
   await user.save(err => {
     if (err) {
@@ -54,12 +56,40 @@ AuthController.signin = async (req, res) => {
           // Issue token
           const payload = { email };
           const token = jwt.sign(payload, secret, {
-            expiresIn: '1h',
+            expiresIn: '10h',
           });
           res.cookie('token', token, { httpOnly: true }).sendStatus(200);
         }
       });
     }
+  });
+};
+
+AuthController.confirmEmailToken = async (req, res) => {
+  const {
+    body: { email, token },
+  } = req;
+
+  const user = await db.collection('users').findOne({ email });
+  if (user.confirmationToken === token) {
+    await db
+      .collection('users')
+      .findOneAndUpdate(
+        { email },
+        { $set: { confirmed: true } },
+        (err, doc) => {
+          if (err) {
+            console.log('Something wrong when updating data!');
+          }
+
+          console.log(doc);
+        },
+      );
+    return res.status(200).send(`${user.email} confirmed successfully`);
+  }
+
+  return res.status(400).json({
+    error: 'Token does not match',
   });
 };
 
@@ -93,7 +123,7 @@ AuthController.confirmEmail = async req => {
     from: 'noreply@bearsteam08@gmail.com',
     to: email,
     subject: 'Confirm account Chingu Bears-08',
-    text: `You are receiving this because you (or someone else) have registered on our site (thanks for helping us out!) \n\n Please click on the following link, or paste this into your browser to complete the process \n\n http://localhost:3000/success-email/${token}`,
+    text: `You are receiving this because you (or someone else) have registered on our site (thanks for helping us out!) \n\n Please click on the following link, or paste this into your browser to complete the process \n\n http://localhost:3000/success-email/${email}/${token}`,
   };
 
   const transporter = nodemailer.createTransport({
@@ -106,11 +136,10 @@ AuthController.confirmEmail = async req => {
 
   transporter.sendMail(mailOptions, err => {
     if (err) console.error(err);
-    console.log('Confirmation email sent');
   });
 };
 
-AuthController.resetPassword = async req => {
+AuthController.resetPassword = async (req, res) => {
   const {
     body: { email },
   } = req;
@@ -121,11 +150,25 @@ AuthController.resetPassword = async req => {
 
   const token = jwt.sign(info, secret);
 
+  await db
+    .collection('users')
+    .findOneAndUpdate(
+      { email },
+      { $set: { confirmationPasswordToken: token } },
+      (err, doc) => {
+        if (err) {
+          console.log('Something wrong when updating data!');
+        }
+
+        console.log(doc);
+      },
+    );
+
   const mailOptions = {
     from: 'noreply@bearsteam08@gmail.com',
-    to: 'lucwsomers@gmail.com',
+    to: email,
     subject: 'Reset Password Chingu Bears-08',
-    text: `You are receiving this because you (or someone else) have requested a password reset on our site \n\n Please click on the following link, or paste this into your browser to complete the process \n\n http://localhost:3000/change-password/${token}`,
+    text: `You are receiving this because you (or someone else) have requested a password reset on our site \n\n Please click on the following link, or paste this into your browser to complete the process \n\n http://localhost:3000/change-password/${email}/${token}`,
   };
 
   const transporter = nodemailer.createTransport({
@@ -137,8 +180,43 @@ AuthController.resetPassword = async req => {
   });
 
   transporter.sendMail(mailOptions, (err, response) => {
-    if (err) console.error(err);
-    response.status(200).json('Confirmation email sent');
+    if (err) {
+      console.error(err);
+      return response.status(500);
+    }
+    return res.status(200).json('Confirmation email sent');
+  });
+};
+
+AuthController.changePassword = async (req, res) => {
+  const {
+    body: {
+      user: { email, token, password },
+    },
+  } = req;
+
+  const hashedPass = await bcrypt.hash(password, 10);
+
+  const user = await db.collection('users').findOne({ email });
+  if (user.confirmationPasswordToken === token) {
+    await db
+      .collection('users')
+      .findOneAndUpdate(
+        { email },
+        { $set: { password: hashedPass } },
+        (err, doc) => {
+          if (err) {
+            console.log('Something wrong when updating data!');
+          }
+
+          console.log(doc);
+        },
+      );
+    return res.status(200).send('Password updated successfully');
+  }
+
+  return res.status(400).json({
+    error: 'Token does not match',
   });
 };
 

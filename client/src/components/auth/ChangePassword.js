@@ -1,5 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+
+import React, { useState, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
+
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -49,10 +51,49 @@ const styles = theme => ({
 });
 
 const ForgotPassword = props => {
+  const [user, setUser] = useState({
+    email: '',
+    password: '',
+    confirmPassword: '',
+    token: '',
+  });
+
+  const [redirect, setRedirect] = useState(false);
+
   const { classes } = props;
+
+  useEffect(() => setUser({ ...user, ...props.match.params }), [user]);
+
+
+  const _renderRedirect = () => {
+    if (redirect) {
+      return <Redirect to="/success-password" />;
+    }
+  };
+
+
+  const onSubmit = async e => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+      body: JSON.stringify({ user }),
+    };
+
+    e.preventDefault();
+    if (user.password === user.confirmPassword) {
+      const res = await fetch(
+        `http://localhost:3000/api/auth/change-password`,
+        options,
+      );
+      if (res.ok) setRedirect(true);
+    }
+  };
 
   return (
     <main className={classes.main}>
+      { _renderRedirect() }
       <CssBaseline />
       <Paper className={classes.paper}>
         <Avatar className={classes.avatar}>
@@ -72,6 +113,7 @@ const ForgotPassword = props => {
               type="password"
               id="newPassword"
               autoComplete="new-password"
+              onChange={e => setUser({ ...user, password: e.target.value })}
             />
           </FormControl>
           <FormControl margin="normal" required fullWidth>
@@ -83,11 +125,13 @@ const ForgotPassword = props => {
               type="password"
               id="newPasswordConfirm"
               autoComplete="new-password-confirm"
+              onChange={e =>
+                setUser({ ...user, confirmPassword: e.target.value })
+              }
             />
           </FormControl>
           <Button
-            component={Link}
-            to="/success-password"
+            onClick={e => onSubmit(e)}
             type="submit"
             fullWidth
             variant="contained"

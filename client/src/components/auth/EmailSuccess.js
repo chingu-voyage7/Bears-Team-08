@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
@@ -47,6 +47,26 @@ const styles = theme => ({
 });
 
 const EmailSuccess = props => {
+  const [user, setUser] = useState({ email: '', token: '' });
+
+  const call = async () => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+      body: JSON.stringify({ email: user.email, token: user.token }),
+    };
+    await setUser(props.match.params)
+    await fetch(`http://localhost:3000/api/auth/email-token-confirmation`,
+      options)
+  }
+
+  useEffect(async () => {
+    call();
+    return () => console.log('unmounting');
+  }, [user])
+
   const { classes } = props;
 
   return (
