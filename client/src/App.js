@@ -1,23 +1,21 @@
 import React, { useEffect, useContext } from 'react';
 import { UserContext } from './context/User';
 import { BrowserRouter as Router } from 'react-router-dom';
+
+import { UserProvider } from './context/User';
 import Header from './components/header/Header';
 import Main from './components/Main';
 
-const App = () => {
-  let { dispatch } = useContext(UserContext);
-  useEffect(() => {
-    const user = localStorage.getItem('user');
-    if (user) dispatch({ type: 'getUser', payload: user });
-  }, []);
-  return (
-      <Router>
-        <div className="App">
-          <Header />
-          <Main />
-        </div>
-      </Router>
-  );
-};
+const App = () => (
+  <UserProvider>
+    <Router>
+      <div className="App">
+        <Header />
+        <Main />
+      </div>
+    </Router>
+  </UserProvider>
+);
+
 
 export default App;

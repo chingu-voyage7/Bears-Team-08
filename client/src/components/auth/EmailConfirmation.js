@@ -62,17 +62,17 @@ const EmailConfirmation = props => {
           Please check your email to confirm.
         </Typography>
 
-          <Button
-            component={Link}
-            to="/"
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
-          >
-            Return to Home
-          </Button>
+        <Button
+          component={Link}
+          to="/"
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="primary"
+          className={classes.submit}
+        >
+          Return to Home
+        </Button>
       </Paper>
     </main>
   );

@@ -54,7 +54,6 @@ class Register extends Component {
   };
 
   _setRedirect = () => {
-    console.log('redirect');
     this.setState({
       redirect: true,
     });
@@ -64,6 +63,7 @@ class Register extends Component {
     if (this.state.redirect) {
       return <Redirect to="/confirm-email" />;
     }
+    return false;
   };
 
   _handleSubmit = async user => {
@@ -78,24 +78,20 @@ class Register extends Component {
 
     if (validated) {
       const res = await fetch(
-        `http://localhost:3000/api/auth/register`,
+        'http://localhost:3000/api/auth/register',
         options,
       );
       if (res.status === 200) {
         await this._setRedirect();
         await fetch(
-          `http://localhost:3000/api/auth/email-confirmation`,
+          'http://localhost:3000/api/auth/email-confirmation',
           options,
         );
       }
     }
   };
 
-  _validateForm = async user => {
-    // fill in later
-    console.log(user, 'validate');
-    return true;
-  };
+  _validateForm = async () => true;
 
   render() {
     const { classes } = this.props;
