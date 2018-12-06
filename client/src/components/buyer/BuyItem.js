@@ -1,6 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { Paper, Typography, Grid, Button } from '@material-ui/core';
+import {
+  Paper,
+  Typography,
+  Grid,
+  Button,
+  } from '@material-ui/core';
+import { item } from '../../mock';
 
 const styles = theme => ({
   divMain: {
@@ -46,13 +53,13 @@ const styles = theme => ({
   },
 });
 
-const data = {
-  title: 'Apple Macbook Air 13 I5 1.8ghz 8gb 128gb Ssd Mqd32',
-  state: 'Novo', // new or not
-  nSold: 9, // number of items sold
-  price: 5599.0, 
-  times: 12, // how many times it can be paid by
-};
+// const data = {
+//   title: 'Apple Macbook Air 13 I5 1.8ghz 8gb 128gb Ssd Mqd32',
+//   state: 'Novo', // new or not
+//   nSold: 9, // number of items sold
+//   price: 5599.0,
+//   times: 12, // how many times it can be paid by
+// };
 
 const BuyItem = props => {
   const { classes } = props;
@@ -70,14 +77,14 @@ const BuyItem = props => {
             <Paper elevation={4} className={classes.paper}>
               <div className={classes.leftCard}>
                 <Typography className={classes.leftCardTypo}>
-                  {data.state} - {data.nSold} vendidos
+                  {item.state} - {item.nSold} vendidos
                 </Typography>
                 <Typography className={classes.leftCardTypo} variant="headline">
-                  {data.title}
+                  {item.name}
                 </Typography>
 
                 <Typography className={classes.leftCardTypo} variant="display1">
-                  R$ {data.price}
+                  R$ {item.price}
                 </Typography>
 
                 <Typography
@@ -85,10 +92,10 @@ const BuyItem = props => {
                   variant="subtitle1"
                 >
                   <p className={classes.price}>
-                    Em até {data.times}x{' '}
+                    Em até {item.times}x{' '}
                     {parseFloat(
                       // shows .2 decimal points only
-                      Math.round((data.price / data.times) * 100) / 100,
+                      Math.round((item.price / item.times) * 100) / 100,
                     ).toFixed(2)}{' '}
                     sem juros
                   </p>
@@ -134,6 +141,10 @@ const BuyItem = props => {
       </div>
     </Paper>
   );
+};
+
+BuyItem.propTypes = {
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(BuyItem);
