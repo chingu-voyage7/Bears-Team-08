@@ -123,7 +123,9 @@ AuthController.confirmEmail = async req => {
     from: 'noreply@bearsteam08@gmail.com',
     to: email,
     subject: 'Confirm account Chingu Bears-08',
-    text: `You are receiving this because you (or someone else) have registered on our site (thanks for helping us out!) \n\n Please click on the following link, or paste this into your browser to complete the process \n\n http://localhost:3000/success-email/${email}/${token}`,
+    text: `You are receiving this because you (or someone else) have registered on our site (thanks for helping us out!) \n\n Please click on the following link, or paste this into your browser to complete the process \n\n ${
+      process.env.REACT_APP_API_URL
+    }/success-email/${email}/${token}`,
   };
 
   const transporter = nodemailer.createTransport({
@@ -168,7 +170,9 @@ AuthController.resetPassword = async (req, res) => {
     from: 'noreply@bearsteam08@gmail.com',
     to: email,
     subject: 'Reset Password Chingu Bears-08',
-    text: `You are receiving this because you (or someone else) have requested a password reset on our site \n\n Please click on the following link, or paste this into your browser to complete the process \n\n http://localhost:3000/change-password/${email}/${token}`,
+    text: `You are receiving this because you (or someone else) have requested a password reset on our site \n\n Please click on the following link, or paste this into your browser to complete the process \n\n ${
+      process.env.REACT_APP_API_URL
+    }/change-password/${email}/${token}`,
   };
 
   const transporter = nodemailer.createTransport({

@@ -1,4 +1,6 @@
-const localEnv = require('dotenv').config();
+const localEnv = require('dotenv-flow').config({
+  default_node_env: 'development',
+});
 
 if (localEnv.error) {
   throw new Error(`Error loading .env file:\n${localEnv.error}`);
@@ -6,10 +8,7 @@ if (localEnv.error) {
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const port = localEnv.parsed.SERVER_PORT;
-const dbUrl = // eslint-disable-line
-  nodeEnv === 'production'
-    ? process.env.MLAB_PRODUCTION
-    : process.env.MLAB_DEVELOPMENT;
+const dbUrl = localEnv.parsed.DB_URL;
 
 const reactType = nodeEnv === 'production' ? 'build' : 'client';
 
