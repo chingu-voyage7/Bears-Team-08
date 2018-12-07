@@ -6,7 +6,6 @@
     "@material-ui/core": "^3.5.1",
     "@material-ui/icons": "^3.0.1",
     "babel-eslint": "9.0.0",
-    "env-cmd": "^8.0.2",
     "eslint": "5.6.0",
     "http-proxy-middleware": "^0.19.0",
     "prop-types": "^15.6.2",
@@ -16,8 +15,8 @@
     "react-scripts": "2.1.1"
   },
   "scripts": {
-    "start": "env-cmd .env.development react-scripts start",
-    "build": "set 'REACT_APP_API_URL=https://bears-team-08.herokuapp.com' react-scripts build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
