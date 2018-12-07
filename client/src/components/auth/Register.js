@@ -55,7 +55,6 @@ class Register extends Component {
   };
 
   _setRedirect = () => {
-    console.log('redirect');
     this.setState({
       redirect: true,
     });
@@ -65,6 +64,7 @@ class Register extends Component {
     if (this.state.redirect) {
       return <Redirect to="/confirm-email" />;
     }
+    return false;
   };
 
   _handleSubmit = async user => {
@@ -93,11 +93,7 @@ class Register extends Component {
     }
   };
 
-  _validateForm = async user => {
-    // fill in later
-    console.log(user, 'validate');
-    return true;
-  };
+  _validateForm = async () => true;
 
   render() {
     const { classes } = this.props;
