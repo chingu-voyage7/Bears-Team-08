@@ -1,4 +1,5 @@
 const randomWords = require('random-words');
+const faker = require('faker');
 
 // Helper functions
 
@@ -33,10 +34,30 @@ function generateSomeWords (wordCount) {
   return words[0];
 }
 
+function randImages(lessThan) {
+  const imageCategories = [
+    'business',
+    'city',
+    'food',
+    'fashion',
+    'sports',
+    'technics',
+    'transport'
+  ];
+  const imageList = [];
+  const quantity = randInt(lessThan);
+  for (let i = 0; i < quantity; i++) {
+    let category = imageCategories[randInt(imageCategories.length)];
+    imageList.push(faker.image.imageUrl(128, 128, category));
+  }
+  return imageList;
+}
+
 const helper = {
   randHex: randHex,
   randInt: randInt,
-  generateSomeWords: generateSomeWords
+  generateSomeWords: generateSomeWords,
+  randImages: randImages
 };
 
 module.exports = helper;

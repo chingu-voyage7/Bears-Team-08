@@ -7,6 +7,8 @@ const Factory = require('rosie').Factory;
 //   'name',
 //   'price',
 //   'description',
+//   'quantity',
+//   'images',
 //   'ownerId',
 //   'createdAt',
 //   'updatedAt',
@@ -18,6 +20,7 @@ const Factory = require('rosie').Factory;
 //   'name',
 //   'price',
 //   'description',
+//   'quantity',
 //   'ownerId'
 // ];
 
@@ -32,6 +35,8 @@ function objectFactory (config) {
     name: () => helper.generateSomeWords(2),
     description: () => faker.lorem.paragraph(),
     price: () => helper.randInt(10000),
+    quantity: () => (1 + helper.randInt(100)),
+    images: () => helper.randImages(5),
     ownerId: () => helper.randHex(24),
     createdAt: () => faker.date.past(2),
     updatedAt: () => faker.date.between(faker.date.past(1), (new Date())),

@@ -29,10 +29,12 @@ if (process.env.MOCK_DEPENDENCIES) {
 const server = require('../index');
 
 // All item properties
-let all = [
+const all = [
   'name',
   'price',
   'description',
+  'images',
+  'quantity',
   'ownerId',
   'createdAt',
   'updatedAt',
@@ -46,11 +48,13 @@ describe('Item routes', function() {
     it('should return an object with item data when every field is filled in',
     function(done) {
 
-      let data = {
+      const data = {
         name: helper.generateSomeWords(2),
         description: faker.lorem.lines(),
-        ownerId: helper.randHex(),
-        price: helper.randInt(10000)
+        ownerId: helper.randHex(24),
+        price: helper.randInt(10000),
+        quantity: 1 + helper.randInt(100),
+        images: helper.randImages(5)
       };
 
      chai.request(server)
@@ -71,11 +75,11 @@ describe('Item routes', function() {
     it('should return a 400 error when missing required fields',
     function(done) {
 
-      let data = {
+      const data = {
         name: helper.generateSomeWords(2)
       }
 
-      let errorMessage = 'validation failed';
+      const errorMessage = 'validation failed';
 
       chai.request(server)
         .post(path.join(apiPath, 'items'))
@@ -97,11 +101,13 @@ describe('Item routes', function() {
     // Save a random item to the database to update it in the test
     before(function (done) {
 
-      let data = {
+      const data = {
         name: helper.generateSomeWords(2),
         description: faker.lorem.lines(),
         ownerId: helper.randHex(24),
-        price: helper.randInt(10000)
+        price: helper.randInt(10000),
+        quantity: 1 + helper.randInt(100),
+        images: helper.randImages(5)
       };
 
      chai.request(server)
@@ -119,7 +125,7 @@ describe('Item routes', function() {
     it('should return a 400 error when there is no request body',
     function (done) {
 
-      let errorMessage = 'Missing ID'
+      const errorMessage = 'Missing ID'
 
       chai.request(server)
         .put(path.join(apiPath, 'items'))
@@ -134,7 +140,7 @@ describe('Item routes', function() {
     it('should return updated item when there is one field to update',
     function(done) {
 
-      let data = {
+      const data = {
         _id: updateItem._id,
         name: 'Updated Name!'
       };
@@ -156,7 +162,7 @@ describe('Item routes', function() {
     it('should return updated item when there are multiple fields to update',
     function(done) {
 
-      let data = {
+      const data = {
         _id: updateItem._id,
         description: 'Updated description!',
         price: 999
@@ -203,7 +209,7 @@ describe('Item routes', function() {
     it('should return an array of relevant items when there is one search filter',
     function(done) {
 
-      let query = {
+      const query = {
         ownerId: helper.randHex(24)
       };
 
@@ -229,7 +235,7 @@ describe('Item routes', function() {
     it('should return an array of relevant items when there are multiple search filters',
     function(done) {
 
-      let query = {
+      const query = {
         ownerId: helper.randHex(),
         price: 100
       };
@@ -263,11 +269,13 @@ describe('Item routes', function() {
     // Save a random item to the database to update in the test
     before(function (done) {
 
-      let data = {
+      const data = {
         name: helper.generateSomeWords(2),
         description: faker.lorem.lines(),
         ownerId: helper.randHex(24),
-        price: helper.randInt(10000)
+        price: helper.randInt(10000),
+        quantity: 1 + helper.randInt(100),
+        images: helper.randImages(5)
       };
 
      chai.request(server)
@@ -288,7 +296,7 @@ describe('Item routes', function() {
         .delete(path.join(apiPath, 'items'))
         .end(function(err, res){
 
-          let errorMessage = 'Missing ID';
+          const errorMessage = 'Missing ID';
 
           expect(res.status).to.equal(400);
           expect(res.text).to.include(errorMessage);
@@ -301,7 +309,7 @@ describe('Item routes', function() {
     it('should return the deleted item when there is a valid _id',
     function(done) {
 
-      let data = {
+      const data = {
         _id: deleteItem._id
       };
 
@@ -327,11 +335,13 @@ describe('Item routes', function() {
     // Save a random item to the database to update in the test
     before(function (done) {
 
-      let data = {
+      const data = {
         name: helper.generateSomeWords(2),
         description: faker.lorem.lines(),
         ownerId: helper.randHex(24),
-        price: helper.randInt(10000)
+        price: helper.randInt(10000),
+        quantity: 1 + helper.randInt(100),
+        images: helper.randImages(5)
       };
 
      chai.request(server)
@@ -348,15 +358,15 @@ describe('Item routes', function() {
     it('should return an error message when there is no valid ID in the path',
     function (done) {
 
-      let invalidId = 'Not an ID';
+      const invalidId = 'Not an ID';
 
-      let id = invalidId;
+      const id = invalidId;
 
       chai.request(server)
         .get(path.join(apiPath, 'items', id))
         .end(function(err, res){
 
-          let errorMessage = 'Invalid ID';
+          const errorMessage = 'Invalid ID';
 
           expect(res.status).to.equal(400);
           expect(res.text).to.include(errorMessage);
@@ -373,7 +383,7 @@ describe('Item routes', function() {
       it('should return an item when it exists',
       function (done) {
 
-        let id = getItem._id;
+        const id = getItem._id;
 
         chai.request(server)
         .get(path.join(apiPath, 'items', id))
@@ -398,13 +408,13 @@ describe('Item routes', function() {
       it('should return a message when the item does not exist',
       function (done) {
 
-        let id = helper.randHex(24);
+        const id = helper.randHex(24);
 
         chai.request(server)
         .get(path.join(apiPath, 'items', id))
         .end(function(err, res){
 
-          let message = 'not found';
+          const message = 'not found';
 
           expect(res.status).to.equal(400);
           expect(res.text).to.include(message);

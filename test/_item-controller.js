@@ -14,6 +14,8 @@ let all = [
   'name',
   'price',
   'description',
+  'images',
+  'quantity',
   'ownerId',
   'createdAt',
   'updatedAt',
@@ -61,7 +63,7 @@ describe('Item Controller', function () {
     async function () {
 
       let filter = {
-        ownerId: helper.randHex()
+        ownerId: helper.randHex(24)
       }
 
       let result = await itemController.read(filter);
@@ -76,7 +78,7 @@ describe('Item Controller', function () {
     async function () {
 
       let filter = {
-        ownerId: helper.randHex(),
+        ownerId: helper.randHex(24),
         price: 100
       };
 
@@ -110,9 +112,11 @@ describe('Item Controller', function () {
 
       let data = {
         name: helper.generateSomeWords(2),
-        ownerId: helper.randHex(),
+        description: faker.lorem.lines(),
+        ownerId: helper.randHex(24),
         price: helper.randInt(10000),
-        description: faker.lorem.lines()
+        quantity: 1 + helper.randInt(100),
+        images: helper.randImages(5)
       };
 
       let result = await itemController.create(data);
@@ -134,9 +138,10 @@ describe('Item Controller', function () {
 
       let data = {
         name: helper.generateSomeWords(2),
-        ownerId: helper.randHex(),
+        ownerId: helper.randHex(24),
         price: helper.randInt(10000),
-        description: faker.lorem.lines()
+        description: faker.lorem.lines(),
+        quantity: 1 + helper.randInt(100),
       };
 
       let result = await itemController.create(data);
@@ -180,6 +185,8 @@ describe('Item Controller', function () {
         description: faker.lorem.lines(),
         ownerId: helper.randHex(24),
         price: helper.randInt(10000),
+        quantity: 1 + helper.randInt(100),
+        images: helper.randImages(5),
         createdAt: (faker.date.past(2)).toDateString(),
         updatedAt: (faker.date.between(faker.date.past(1), (new Date()))).toDateString(),
         _id: helper.randHex(24)
