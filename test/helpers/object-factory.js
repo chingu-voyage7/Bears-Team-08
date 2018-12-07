@@ -24,27 +24,27 @@ const Factory = require('rosie').Factory;
 //   'ownerId'
 // ];
 
-
-function objectFactory (config) {
-
+function objectFactory(config) {
   // Factory will generate a random quantity between 1 and (config.n) random objects
-  let quantity = config.n === 0 ? 1 : 2 + helper.randInt(config.n);
+  const quantity = config.n === 0 ? 1 : 2 + helper.randInt(config.n);
 
   // Random values-generator for specified attributes
-  let attributeGenerator = {
+  const attributeGenerator = {
     name: () => helper.generateSomeWords(2),
     description: () => faker.lorem.paragraph(),
     price: () => helper.randInt(10000),
-    quantity: () => (1 + helper.randInt(100)),
+    quantity: () => 1 + helper.randInt(100),
     images: () => helper.randImages(5),
     ownerId: () => helper.randHex(24),
     createdAt: () => faker.date.past(2),
-    updatedAt: () => faker.date.between(faker.date.past(1), (new Date())),
-    _id: () => helper.randHex(24)
+    updatedAt: () => faker.date.between(faker.date.past(1), new Date()),
+    _id: () => helper.randHex(24),
   };
 
   // config.filter is used to override random attribute data
-  let factory = new Factory().attrs(Object.assign(attributeGenerator, config.filter));
+  const factory = new Factory().attrs(
+    Object.assign(attributeGenerator, config.filter),
+  );
 
   let objects;
 

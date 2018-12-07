@@ -6,31 +6,37 @@ const faker = require('faker');
 // Generate a random hex string
 // to simulate MongoDB _id's (w/ length = 24)
 // Code by Code Monk: https://codepen.io/code_monk/pen/FvpfI
-function randHex (len) {
-  let maxlen = 8,
-      min = Math.pow(16, Math.min(len, maxlen) - 1)
-      max = Math.pow(16, Math.min(len, maxlen)) - 1,
-      n   = Math.floor( Math.random() * (max - min + 1) ) + min,
-      r   = n.toString(16);
-  while ( r.length < len ) {
-     r = r + randHex( len - maxlen );
+function randHex(len) {
+  const maxlen = 8;
+
+  const min = Math.pow(16, Math.min(len, maxlen) - 1);
+  (max = Math.pow(16, Math.min(len, maxlen)) - 1),
+    (n = Math.floor(Math.random() * (max - min + 1)) + min),
+    (r = n.toString(16));
+  while (r.length < len) {
+    r += randHex(len - maxlen);
   }
   return r;
-};
+}
 
 // Generate a random integer lesser than a given number
 function randInt(lessThan) {
-    return Math.floor(Math.random() * lessThan);
+  return Math.floor(Math.random() * lessThan);
 }
 
 // Generate some random words
-function generateSomeWords (wordCount) {
-  let words = randomWords({
+function generateSomeWords(wordCount) {
+  const words = randomWords({
     exactly: 1,
     wordsPerString: wordCount,
-    formatter: (word, index) => {
-      return index === 0 ? word.slice(0,1).toUpperCase().concat(word.slice(1)) : word;
-    }});
+    formatter: (word, index) =>
+      (index === 0
+        ? word
+            .slice(0, 1)
+            .toUpperCase()
+            .concat(word.slice(1))
+        : word),
+  });
   return words[0];
 }
 
@@ -42,22 +48,22 @@ function randImages(lessThan) {
     'fashion',
     'sports',
     'technics',
-    'transport'
+    'transport',
   ];
   const imageList = [];
   const quantity = randInt(lessThan);
   for (let i = 0; i < quantity; i++) {
-    let category = imageCategories[randInt(imageCategories.length)];
+    const category = imageCategories[randInt(imageCategories.length)];
     imageList.push(faker.image.imageUrl(128, 128, category));
   }
   return imageList;
 }
 
 const helper = {
-  randHex: randHex,
-  randInt: randInt,
-  generateSomeWords: generateSomeWords,
-  randImages: randImages
+  randHex,
+  randInt,
+  generateSomeWords,
+  randImages,
 };
 
 module.exports = helper;
