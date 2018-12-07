@@ -22,7 +22,7 @@ const App = () => {
         <Main />
       </div>
     </Router>
-    <UserProvider>
+    </UserProvider>
   );
 };
 
