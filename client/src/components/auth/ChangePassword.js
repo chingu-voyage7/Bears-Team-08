@@ -1,8 +1,8 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import PropTypes from 'prop-types';
+import {ConfigContext } from '../../context';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
@@ -51,6 +51,7 @@ const styles = theme => ({
 });
 
 const ForgotPassword = props => {
+  let { config } = useContext(ConfigContext);
   const [user, setUser] = useState({
     email: '',
     password: '',
@@ -64,13 +65,11 @@ const ForgotPassword = props => {
 
   useEffect(() => setUser({ ...user, ...props.match.params }), [user]);
 
-
   const _renderRedirect = () => {
     if (redirect) {
       return <Redirect to="/success-password" />;
     }
   };
-
 
   const onSubmit = async e => {
     const options = {
@@ -84,7 +83,7 @@ const ForgotPassword = props => {
     e.preventDefault();
     if (user.password === user.confirmPassword) {
       const res = await fetch(
-        `http://localhost:3000/api/auth/change-password`,
+        `${config.url}/api/auth/change-password`,
         options,
       );
       if (res.ok) setRedirect(true);
@@ -93,7 +92,7 @@ const ForgotPassword = props => {
 
   return (
     <main className={classes.main}>
-      { _renderRedirect() }
+      {_renderRedirect()}
       <CssBaseline />
       <Paper className={classes.paper}>
         <Avatar className={classes.avatar}>
