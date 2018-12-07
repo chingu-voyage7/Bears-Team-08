@@ -9,7 +9,7 @@ const { User } = models;
 const AuthController = {};
 
 AuthController.register = async (req, res) => {
-  const { email, password, firstName, lastName } = req.body; //  eslint-disable-line
+  const { email, password, firstName, lastName } = req.body //  eslint-disable-line
   const user = new User({
     email,
     password,
@@ -55,6 +55,8 @@ AuthController.signin = async (req, res) => {
         } else {
           // Issue token
           const payload = { email };
+          // Could we change it to this?
+          // const payload = { id: user._id };
           const token = jwt.sign(payload, secret, {
             expiresIn: '10h',
           });
