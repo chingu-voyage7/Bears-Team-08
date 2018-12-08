@@ -40,43 +40,43 @@ const localStrategy = new LocalStrategy(
     //   .catch(error => done(error));
 
     // Luc's auth in AuthController.signin strategy moved here and adapted
-    User.findOne({ email }, (err, user) => {
-      if (err) {
+    return User.findOne({ email }, (error, user) => {
+      if (error) {
         // res.status(500).json({
         //   error: 'Internal error please try again',
         // });
         return done(error);
-
-      } else if (!user) {
+      }
+      if (!user) {
         // res.status(401).json({
         //   error: 'Incorrect email or password',
         // });
         return done(null, false, { message: 'Incorrect email or password.' });
-      } else {
-        user.isCorrectPassword(password, (e, same) => {
-          if (e) {
-            // res.status(500).json({
-            //   error: 'Internal error please try again',
-            // });
-            return done(e);
-          } else if (!same) {
-            // res.status(401).json({
-            //   error: 'Incorrect email or password',
-            // });
-            return done(null, false, { message: 'Incorrect email or password.' });
-          } else {
-            // // Issue token
-            // const payload = { email };
-            // const token = jwt.sign(payload, secret, {
-            //   expiresIn: '10h',
-            // });
-            // res.cookie('token', token, { httpOnly: true }).sendStatus(200);
-            return done(null, user);
-          }
-        });
       }
+      return user.isCorrectPassword(password, (e, same) => {
+        if (e) {
+          // res.status(500).json({
+          //   error: 'Internal error please try again',
+          // });
+          return done(e);
+        }
+        if (!same) {
+          // res.status(401).json({
+          //   error: 'Incorrect email or password',
+          // });
+          return done(null, false, {
+            message: 'Incorrect email or password.',
+          });
+        }
+        // // Issue token
+        // const payload = { email };
+        // const token = jwt.sign(payload, secret, {
+        //   expiresIn: '10h',
+        // });
+        // res.cookie('token', token, { httpOnly: true }).sendStatus(200);
+        return done(null, user);
+      });
     });
-
   },
 );
 

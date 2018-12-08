@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
 const logger = require('morgan');
 const config = require('./config');
+
 const { reactType, serverPort, logFormat } = config;
 
 const router = require('./api/routes');

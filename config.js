@@ -13,7 +13,6 @@ const dbUrl = localEnv.parsed.DB_URL;
 const reactType = nodeEnv === 'production' ? 'build' : 'client';
 const logFormat = nodeEnv === 'production' ? 'combined' : 'dev';
 
-
 module.exports = {
   serverPort: port,
   mongoDB: {
@@ -21,5 +20,5 @@ module.exports = {
     type: `${nodeEnv} database`,
   },
   reactType,
-  logFormat
+  logFormat,
 };
