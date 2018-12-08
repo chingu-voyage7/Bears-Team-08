@@ -26,7 +26,7 @@ if (process.env.MOCK_DEPENDENCIES) {
   // to stop mocking : mock.stopAll();
 }
 
-// To bypass authentication use: 
+// To bypass authentication use:
 // mock('../api/routes/middleware/ensure-login', () => ((req, res, next) => next() ));
 
 // Note: need to pass --exit flag to mocha in package.json scripts.test to close the server after tests
@@ -84,7 +84,6 @@ describe('Item routes', function () {
         const data = {
           name: helper.generateSomeWords(2),
           description: faker.lorem.lines(),
-          ownerId: helper.randHex(24),
           price: helper.randInt(10000),
           quantity: 1 + helper.randInt(100),
           images: helper.randImages(5),
@@ -98,7 +97,7 @@ describe('Item routes', function () {
           expect(res.body).to.have.all.keys(all);
           expect(res.body.name).to.equal(data.name);
           expect(res.body.description).to.equal(data.description);
-          expect(res.body.ownerId).to.equal(data.ownerId);
+          // expect(res.body.ownerId).to.equal(ownerId);
           expect(Number(res.body.price)).to.equal(data.price);
           done();
         });
@@ -173,10 +172,9 @@ describe('Item routes', function () {
         .send(Object.assign(updateItem, data))
         .end((err, res) => {
           expect(res.status).to.equal(200);
-          // expect(res.body).to.include.all.keys(all);
-          // expect(res.body._id).to.equal(data._id);
-          // expect(res.body.name).to.equal(data.name);
-          expect(res.text).to.include('successfully updated');
+          expect(res.body).to.include.all.keys(all);
+          expect(res.body._id).to.equal(data._id);
+          expect(res.body.name).to.equal(data.name);
           done();
         });
       });
@@ -193,11 +191,10 @@ describe('Item routes', function () {
         .send(Object.assign(updateItem, data))
         .end((err, res) => {
           expect(res.status).to.equal(200);
-          // expect(res.body).to.include.all.keys(all);
-          // expect(res.body._id).to.equal(data._id);
-          // expect(res.body.description).to.equal(data.description);
-          // expect(Number(res.body.price)).to.equal(data.price);
-          expect(res.text).to.include('successfully updated');
+          expect(res.body).to.include.all.keys(all);
+          expect(res.body._id).to.equal(data._id);
+          expect(res.body.description).to.equal(data.description);
+          expect(Number(res.body.price)).to.equal(data.price);
           done();
         });
       });

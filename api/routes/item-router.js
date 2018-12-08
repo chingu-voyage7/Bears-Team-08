@@ -9,128 +9,20 @@ const itemRouter = express.Router();
 
 const loginPath = '/api/auth/signin';
 
-// Items
-// To do: Link to authorization system
-// To do: sanitize database input
 
-itemRouter.get('/items/:item', (req, res, next) => {
+// ROUTES
 
-  const data = { _id: req.params.item };
-
-  itemController.read(data)
-    .then(result => {
-      if (!result) {
-        res.status(400);
-        return res.send('Item not found.');
-      }
-      return res.json(result)
-    })
-    .catch(error => {
-      const message = 'Invalid ID';
-      if (error.message.includes(message)) {
-        res.status(400);
-        console.error('Error (400):', error.message);
-        return res.send(error.message);
-      } else {
-        console.error(`Server error:\n${error.message}`);
-        res.status(500);
-        return res.send('Server error.');
-      }
-    });
-
-});
+itemRouter.get('/items/:item', itemController.readOne);
 
 itemRouter.route('/items')
 
-  .get((req, res, next) => {
+  .get(itemController.read)
 
-    const data = req.query;
+  .post(ensureLogin(loginPath), itemController.create)
 
-    itemController.read(data)
-      .then(result => {
-        return res.json(result)
-      })
-      .catch(error => {
-        res.status(500);
-        return res.send('Server error.');
-      });
+  .put(ensureLogin(loginPath), itemController.update)
 
-  })
-
-  .post(ensureLogin(loginPath), (req, res, next) => {
-
-    const data = req.body;
-
-    itemController.create(data)
-      .then(result => {
-        return res.json(result);
-      })
-      .catch(error => {
-        const message = 'validation failed';
-        if (error.message.includes(message)) {
-          res.status(400);
-          console.error('Error (400): ', error.message);
-          return res.send(error.message);
-        } else {
-          console.error(`Error saving to database: ${error.message}`);
-          res.status(500);
-          return res.send('Server error.');
-        }
-      });
-
-
-  })
-
-  .put(ensureLogin(loginPath), (req, res, next) => {
-
-    const data = req.body;
-
-    itemController.update(data)
-      // What shall we return?
-      .then(result => {
-        console.log("\nUpdated item:\n", result, "\n");
-        return res.send('successfully updated');
-      })
-      .catch(error => {
-        const message = 'Missing ID';
-        if (error.message.includes(message)) {
-          res.status(400);
-          console.error('Error (400): ', error.message);
-          return res.send(error.message);
-        } else {
-          console.error(`Error saving to database: ${error.message}`);
-          res.status(500);
-          return res.send('Server error.');
-        }
-      });
-
-  })
-
-  .delete(ensureLogin(loginPath), (req, res, next) => {
-
-    const data = req.body;
-
-    itemController.remove(data)
-      .then(result => {
-        console.log("\nDeleted item:\n", result, "\n")
-        res.locals._id = result._id.toString();
-        return res.send(`deleted ${res.locals._id}`);
-      })
-      .catch(error => {
-        const message = 'Missing ID';
-        if (error.message.includes(message)) {
-          res.status(400);
-          console.error('Error (400):', error.message);
-          return res.send(error.message);
-        } else {
-          res.status(500);
-          res.locals._id = error._id;
-          console.error(`Error when deleting database entry: ${error.message}`);
-          return res.send(`Server error: could not delete ${res.locals._id}`);
-        }
-      });
-
-  });
+  .delete(ensureLogin(loginPath), itemController.remove);
 
 
 module.exports = itemRouter;
