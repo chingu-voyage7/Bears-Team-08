@@ -1,9 +1,13 @@
 const express = require('express');
 const controllers = require('../controllers');
+const middleware = require('./middleware');
 
 const { itemController } = controllers;
+const { ensureLogin } = middleware;
 
 const itemRouter = express.Router();
+
+const loginPath = '/api/auth/signin';
 
 // Items
 // To do: Link to authorization system
@@ -11,7 +15,7 @@ const itemRouter = express.Router();
 
 itemRouter.get('/items/:item', (req, res, next) => {
 
-  let data = { _id: req.params.item };
+  const data = { _id: req.params.item };
 
   itemController.read(data)
     .then(result => {
@@ -22,7 +26,7 @@ itemRouter.get('/items/:item', (req, res, next) => {
       return res.json(result)
     })
     .catch(error => {
-      let message = 'Invalid ID';
+      const message = 'Invalid ID';
       if (error.message.includes(message)) {
         res.status(400);
         console.error('Error (400):', error.message);
@@ -40,7 +44,7 @@ itemRouter.route('/items')
 
   .get((req, res, next) => {
 
-    let data = req.query;
+    const data = req.query;
 
     itemController.read(data)
       .then(result => {
@@ -53,16 +57,16 @@ itemRouter.route('/items')
 
   })
 
-  .post((req, res, next) => {
+  .post(ensureLogin(loginPath), (req, res, next) => {
 
-    let data = req.body;
+    const data = req.body;
 
     itemController.create(data)
       .then(result => {
         return res.json(result);
       })
       .catch(error => {
-        let message = 'validation failed';
+        const message = 'validation failed';
         if (error.message.includes(message)) {
           res.status(400);
           console.error('Error (400): ', error.message);
@@ -77,9 +81,9 @@ itemRouter.route('/items')
 
   })
 
-  .put((req, res, next) => {
+  .put(ensureLogin(loginPath), (req, res, next) => {
 
-    let data = req.body;
+    const data = req.body;
 
     itemController.update(data)
       // What shall we return?
@@ -88,7 +92,7 @@ itemRouter.route('/items')
         return res.send('successfully updated');
       })
       .catch(error => {
-        let message = 'Missing ID';
+        const message = 'Missing ID';
         if (error.message.includes(message)) {
           res.status(400);
           console.error('Error (400): ', error.message);
@@ -102,9 +106,9 @@ itemRouter.route('/items')
 
   })
 
-  .delete((req, res, next) => {
+  .delete(ensureLogin(loginPath), (req, res, next) => {
 
-    let data = req.body;
+    const data = req.body;
 
     itemController.remove(data)
       .then(result => {
@@ -113,7 +117,7 @@ itemRouter.route('/items')
         return res.send(`deleted ${res.locals._id}`);
       })
       .catch(error => {
-        let message = 'Missing ID';
+        const message = 'Missing ID';
         if (error.message.includes(message)) {
           res.status(400);
           console.error('Error (400):', error.message);
