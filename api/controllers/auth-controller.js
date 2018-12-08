@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const models = require('../models');
+const passport = require('passport');
 const db = require('../../database');
 
 const { User } = models;
@@ -30,41 +31,82 @@ AuthController.register = async (req, res) => {
   });
 };
 
-AuthController.signin = async (req, res) => {
+AuthController.signin = async (req, res, next) => {
   const secret = 'shhh';
   const { email, password } = req.body;
-  User.findOne({ email }, (err, user) => {
-    if (err) {
-      res.status(500).json({
+
+  // Luc's previous strategy:
+
+  // User.findOne({ email }, (err, user) => {
+  //   if (err) {
+  //     res.status(500).json({
+  //       error: 'Internal error please try again',
+  //     });
+  //   } else if (!user) {
+  //     res.status(401).json({
+  //       error: 'Incorrect email or password',
+  //     });
+  //   } else {
+  //     user.isCorrectPassword(password, (e, same) => {
+  //       if (e) {
+  //         res.status(500).json({
+  //           error: 'Internal error please try again',
+  //         });
+  //       } else if (!same) {
+  //         res.status(401).json({
+  //           error: 'Incorrect email or password',
+  //         });
+  //       } else {
+  //         // Issue token
+  //         const payload = { email };
+  //         // Could we change it to this?
+  //         // const payload = { id: user._id };
+  //         const token = jwt.sign(payload, secret, {
+  //           expiresIn: '10h',
+  //         });
+  //         res.cookie('token', token, { httpOnly: true }).sendStatus(200);
+  //       }
+  //     });
+  //   }
+  // });
+
+  // Using passport to authenticate
+  // (Luc's strategy above moved to passport localStrategy in config/passport.js)
+  passport.authenticate('local', (error, user, info) => {
+
+    console.log('Inside passport.authenticate() callback');
+    console.log(`req.session.passport: ${JSON.stringify(req.session.passport)}`)
+    console.log(`req.user: ${JSON.stringify(req.user)}`)
+
+    if (error) {
+      return res.status(500).json({
         error: 'Internal error please try again',
       });
-    } else if (!user) {
-      res.status(401).json({
-        error: 'Incorrect email or password',
-      });
-    } else {
-      user.isCorrectPassword(password, (e, same) => {
-        if (e) {
-          res.status(500).json({
-            error: 'Internal error please try again',
-          });
-        } else if (!same) {
-          res.status(401).json({
-            error: 'Incorrect email or password',
-          });
-        } else {
-          // Issue token
-          const payload = { email };
-          // Could we change it to this?
-          // const payload = { id: user._id };
-          const token = jwt.sign(payload, secret, {
-            expiresIn: '10h',
-          });
-          res.cookie('token', token, { httpOnly: true }).sendStatus(200);
-        }
-      });
     }
-  });
+
+    req.login(user, (error) => {
+      console.log('Inside req.login() callback')
+      console.log(`req.session.passport: ${JSON.stringify(req.session.passport)}`)
+      console.log(`req.user: ${JSON.stringify(req.user)}`)
+
+      if (error) {
+        return res.status(500).json({
+          error: 'Internal error please try again',
+        });
+      }
+
+      // Issue token
+      // const payload = { email };
+      // Changed the payload to user._id to avoid exposing email
+      const payload = { id: user._id };
+      const token = jwt.sign(payload, secret, {
+        expiresIn: '10h',
+      });
+      return res.cookie('token', token, { httpOnly: true }).sendStatus(200);
+
+    });
+  })(req, res, next);
+
 };
 
 AuthController.confirmEmailToken = async (req, res) => {
