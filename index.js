@@ -4,20 +4,20 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session');
-const passport = require('passport');
+const logger = require('morgan');
 const config = require('./config');
 
-const { reactType, serverPort } = config;
+const { reactType, serverPort, logFormat } = config;
 
 const router = require('./api/routes');
 
-// MODELS
-require('./api/models');
-require('./config/passport');
+// Passport already pre-configured
+const passport = require('./config/passport');
 
 const app = express();
 
 // MIDDLEWARE
+app.use(logger(logFormat));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
