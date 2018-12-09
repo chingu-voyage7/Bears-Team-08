@@ -35,8 +35,8 @@ const server = require('../index');
 // A test user registered in the database
 // Used for authenticated requests
 const userCredentials = {
-  email: "fake@fake.me",
-  password: "123456"
+  email: 'fake@fake.me',
+  password: '123456',
 };
 
 // All item properties
@@ -52,15 +52,15 @@ const all = [
   '_id',
 ];
 
-describe('Item routes', function () {
+describe('Item routes', function() {
+  // disable timeout
+  this.timeout(0);
 
-  context('Protected routes: POST, PUT, DELETE', function () {
-
+  context('Protected routes: POST, PUT, DELETE', () => {
     // Persist session
     let chaiAgent;
 
-    before(function (done) {
-
+    before(done => {
       chaiAgent = chai.request.agent(server);
 
       chaiAgent
@@ -69,17 +69,13 @@ describe('Item routes', function () {
         .end((err, res) => {
           done();
         });
-
     });
 
-    after(function () {
-
+    after(() => {
       chaiAgent.close();
-
     });
 
-    context('POST request to /items', function (){
-
+    context('POST request to /items', () => {
       it('should return an object with item data when every field is filled in', done => {
         const data = {
           name: helper.generateSomeWords(2),
@@ -89,18 +85,18 @@ describe('Item routes', function () {
           images: helper.randImages(5),
         };
 
-         chaiAgent
-        .post(path.join(apiPath, 'items'))
-        .send(data)
-        .end((err, res) => {
-          expect(res.status).to.equal(200);
-          expect(res.body).to.have.all.keys(all);
-          expect(res.body.name).to.equal(data.name);
-          expect(res.body.description).to.equal(data.description);
-          // expect(res.body.ownerId).to.equal(ownerId);
-          expect(Number(res.body.price)).to.equal(data.price);
-          done();
-        });
+        chaiAgent
+          .post(path.join(apiPath, 'items'))
+          .send(data)
+          .end((err, res) => {
+            expect(res.status).to.equal(200);
+            expect(res.body).to.have.all.keys(all);
+            expect(res.body.name).to.equal(data.name);
+            expect(res.body.description).to.equal(data.description);
+            // expect(res.body.ownerId).to.equal(ownerId);
+            expect(Number(res.body.price)).to.equal(data.price);
+            done();
+          });
       });
 
       it('should return a 400 error when missing required fields', done => {
@@ -111,13 +107,13 @@ describe('Item routes', function () {
         const errorMessage = 'validation failed';
 
         chaiAgent
-        .post(path.join(apiPath, 'items'))
-        .send(data)
-        .end((err, res) => {
-          expect(res.status).to.equal(400);
-          expect(res.text).to.include(errorMessage);
-          done();
-        });
+          .post(path.join(apiPath, 'items'))
+          .send(data)
+          .end((err, res) => {
+            expect(res.status).to.equal(400);
+            expect(res.text).to.include(errorMessage);
+            done();
+          });
       });
     });
 
@@ -129,32 +125,29 @@ describe('Item routes', function () {
         const data = {
           name: helper.generateSomeWords(2),
           description: faker.lorem.lines(),
-          ownerId: helper.randHex(24),
           price: helper.randInt(10000),
           quantity: 1 + helper.randInt(100),
           images: helper.randImages(5),
         };
 
         chaiAgent
-        .post(path.join(apiPath, 'items'))
-        .send(data)
-        .end((err, res) => {
-          updateItem = res.body;
-          console.log(
-            '\nThis item will be updated by the test:\n',
-            updateItem,
-            '\n',
-          );
-          done();
-        });
+          .post(path.join(apiPath, 'items'))
+          .send(data)
+          .end((err, res) => {
+            updateItem = res.body;
+            console.log(
+              '\nThis item will be updated by the test:\n',
+              updateItem,
+              '\n',
+            );
+            done();
+          });
       });
 
       it('should return a 400 error when there is no request body', done => {
         const errorMessage = 'Missing ID';
 
-        chaiAgent
-        .put(path.join(apiPath, 'items'))
-        .end((err, res) => {
+        chaiAgent.put(path.join(apiPath, 'items')).end((err, res) => {
           expect(res.status).to.equal(400);
           expect(res.text).to.include(errorMessage);
           done();
@@ -168,15 +161,15 @@ describe('Item routes', function () {
         };
 
         chaiAgent
-        .put(path.join(apiPath, 'items'))
-        .send(Object.assign(updateItem, data))
-        .end((err, res) => {
-          expect(res.status).to.equal(200);
-          expect(res.body).to.include.all.keys(all);
-          expect(res.body._id).to.equal(data._id);
-          expect(res.body.name).to.equal(data.name);
-          done();
-        });
+          .put(path.join(apiPath, 'items'))
+          .send(Object.assign(updateItem, data))
+          .end((err, res) => {
+            expect(res.status).to.equal(200);
+            expect(res.body).to.include.all.keys(all);
+            expect(res.body._id).to.equal(data._id);
+            expect(res.body.name).to.equal(data.name);
+            done();
+          });
       });
 
       it('should return updated item when there are multiple fields to update', done => {
@@ -187,16 +180,16 @@ describe('Item routes', function () {
         };
 
         chaiAgent
-        .put(path.join(apiPath, 'items'))
-        .send(Object.assign(updateItem, data))
-        .end((err, res) => {
-          expect(res.status).to.equal(200);
-          expect(res.body).to.include.all.keys(all);
-          expect(res.body._id).to.equal(data._id);
-          expect(res.body.description).to.equal(data.description);
-          expect(Number(res.body.price)).to.equal(data.price);
-          done();
-        });
+          .put(path.join(apiPath, 'items'))
+          .send(Object.assign(updateItem, data))
+          .end((err, res) => {
+            expect(res.status).to.equal(200);
+            expect(res.body).to.include.all.keys(all);
+            expect(res.body._id).to.equal(data._id);
+            expect(res.body.description).to.equal(data.description);
+            expect(Number(res.body.price)).to.equal(data.price);
+            done();
+          });
       });
     });
 
@@ -208,7 +201,6 @@ describe('Item routes', function () {
         const data = {
           name: helper.generateSomeWords(2),
           description: faker.lorem.lines(),
-          ownerId: helper.randHex(24),
           price: helper.randInt(10000),
           quantity: 1 + helper.randInt(100),
           images: helper.randImages(5),
@@ -229,17 +221,14 @@ describe('Item routes', function () {
       });
 
       it('should return a 400 error when there is no _id in the body', done => {
+        chaiAgent.delete(path.join(apiPath, 'items')).end((err, res) => {
+          const errorMessage = 'Missing ID';
 
-        chaiAgent
-          .delete(path.join(apiPath, 'items'))
-          .end((err, res) => {
-            const errorMessage = 'Missing ID';
+          expect(res.status).to.equal(400);
+          expect(res.text).to.include(errorMessage);
 
-            expect(res.status).to.equal(400);
-            expect(res.text).to.include(errorMessage);
-
-            done();
-          });
+          done();
+        });
       });
 
       it('should return the deleted item when there is a valid _id', done => {
@@ -253,19 +242,15 @@ describe('Item routes', function () {
           .end((err, res) => {
             expect(res.status).to.equal(200);
             expect(res.text).to.include(`deleted ${data._id}`);
-
             done();
           });
       });
     });
-
   });
 
-  context('Unprotected routes: GET', function () {
-
+  context('Unprotected routes: GET', () => {
     context('GET request to /items', () => {
       it('should return an array of items when there is no search filter', done => {
-
         chai
           .request(server)
           .get(path.join(apiPath, 'items'))
@@ -334,7 +319,6 @@ describe('Item routes', function () {
 
       // Save a random item to the database to update in the test
       before(done => {
-
         const data = {
           name: helper.generateSomeWords(2),
           description: faker.lorem.lines(),
@@ -344,30 +328,27 @@ describe('Item routes', function () {
           images: helper.randImages(5),
         };
 
-
-        let chaiAgent = chai.request.agent(server);
+        const chaiAgent = chai.request.agent(server);
 
         chaiAgent
           .post(path.join(apiPath, '/auth/signin'))
           .send(userCredentials)
           .then(res => {
-
             chaiAgent
-            .post(path.join(apiPath, 'items'))
-            .send(data)
-            .end((err, res) => {
-              getItem = res.body;
-              console.log(
-                '\nThis item will be fetched by the test:\n',
-                getItem,
-                '\n',
-              );
-              chaiAgent.close();
-              done();
-            });
+              .post(path.join(apiPath, 'items'))
+              .send(data)
+              .end((err, res) => {
+                getItem = res.body;
+                console.log(
+                  '\nThis item will be fetched by the test:\n',
+                  getItem,
+                  '\n',
+                );
+                chaiAgent.close();
+                done();
+              });
           })
           .catch(error => console.error('Error:', error.message));
-
       });
 
       it('should return an error message when there is no valid ID in the path', done => {
@@ -428,8 +409,5 @@ describe('Item routes', function () {
         });
       } // end if
     });
-
   });
-
-
 });
