@@ -13,7 +13,7 @@ const styles = theme => ({
   },
   div: {
     maxWidth: '1180px',
-    padding: '0 20px',
+    padding: '20px',
     display: 'flex',
     margin: '0 auto',
     // marginTop: '-21px',
@@ -25,50 +25,49 @@ const styles = theme => ({
     // height: '500px',
     display: 'flex',
     // alignItems: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     // color: '#000',
   },
   description: {
     margin: '20px',
-    justifyContent: 'flex-start',
-    textAlign: 'justify',
+    // justifyContent: 'flex-start',
+    // textAlign: 'justify',
   },
-  info: {
-    margin: '20px',
-    justifyContent: 'flex-start',
-    textAlign: 'justify',
+  title: {
+    color: 'red',
+  },
+  answer: {
+    color: 'blue',
   }
 });
 
 const Item = props => {
   const { classes } = props;
+
+  const renderQuestions = item.questions.map((question, i) => (
+    <div key={i}>
+      <p className={classes.title}>{question.title}</p>
+      <p className={classes.answer}>{question.answer}</p>
+      <br />
+    </div>
+  ));
+
   return (
     <div className={classes.div}>
       <Grid container spacing={16} className={classes.mainGrid}>
         <Grid item xs={12} md={7} container>
           <Paper elevation={4} className={classes.paper}>
-            <div className={classes.description}>
-              <p>{item.description}</p>
-            </div>
+            <div className={classes.description}>{renderQuestions}</div>
           </Paper>
         </Grid>
 
-        <Grid item xs={12} md={5} container>
+        {/* <Grid item xs={12} md={5} container>
           <Paper elevation={4} className={classes.paper}>
-            <div className={classes.info}>
-              <h1>informacao da loja</h1>
-              <p>
-                rating etc Lorem ipsum dolor sit, amet consectetur adipisicing
-                elit. Omnis atque labore beatae minus hic aspernatur quibusdam
-                sunt ut, fugiat alias numquam aperiam recusandae esse eaque!
-                Incidunt doloribus nisi debitis pariatur iste. Praesentium, modi
-                minus quasi necessitatibus voluptatem, adipisci suscipit illum
-                tenetur sapiente eveniet corrupti tempore possimus natus iusto
-                veniam incidunt!
-              </p>
+            <div>
+              <p>nothing here</p>
             </div>
           </Paper>
-        </Grid>
+        </Grid> */}
       </Grid>
     </div>
   );

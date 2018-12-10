@@ -4,15 +4,21 @@ export const item = {
   nSold: 9, // number of items sold
   price: 5599.0,
   description:
-    'O MacBook Air MQD32LL/A da Apple é portátil e conta com um design fino, elegante e diversos recursos que proporcionam maior praticidade e eficiência para a realização das atividades diárias em casa ou no escritório. Conta com processador Intel i5 Dual Core de 1.8 GHz junto com a memória RAM de 8GB, capaz de oferecer excelentes respostas aos comandos e processos exigidos. Conta com conexões Wi Fi e Bluetooth para transferência de dados com outros dispositivos compatíveis.',
+    'O MacBook Air MQD32LL/A da Apple é portátil e conta com um design fino, elegante e diversos recursos que proporcionam maior praticidade e eficiência para a realização das atividades diárias em casa ou no escritório. Conta com processador Intel i5 Dual Core de 1.8 GHz junto com a memória RAM de 8GB, capaz de oferecer excelentes respostas aos comandos e processos exigidos. Conta com conexões Wi Fi e Bluetooth para transferência de dados com outros dispositivos compatíveis. Omnis atque labore beatae minus hic aspernatur quibusdam sunt ut, fugiat alias numquam aperiam recusandae esse eaque! Incidunt doloribus nisi debitis pariatur iste. Praesentium, modi minus quasi necessitatibus voluptate adipisci suscipit illum tenetur sapiente eveniet corrup tempore possimus natus iusto  veniam incidunt!  Omnis atque labore beatae minus hic aspernatur quibusdam sunt ut, fugiat alias numquam aperiam recusandae esse eaque! Incidunt doloribus nisi debitis pariatur iste. Praesentium, modi minus quasi necessitatibus voluptate adipisci suscipit illum tenetur sapiente eveniet corrup tempore possimus natus iusto  veniam incidunt!',
   times: 12, // how many times it can be paid by
   questions: [
     {
       title: 'ainda disponivel?',
+      answer: 'sim',
+    },
+    {
+      title: 'é o original?',
+      answer: 'sim, todos os nossos produtos sao originais',
     },
   ], // questions about the product
   location: 'Sao Paulo/Brazil',
-  images: [],
+  sellerRating: 5, // number of stars
+  images: [], // not sure what type this should be
   id: 1, // item id
 };
 
