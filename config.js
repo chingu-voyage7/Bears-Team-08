@@ -12,6 +12,7 @@ const dbUrl = // eslint-disable-line
     : process.env.MLAB_DEVELOPMENT;
 
 const reactType = nodeEnv === 'production' ? 'build' : 'client';
+const logFormat = nodeEnv === 'production' ? 'combined' : 'dev';
 
 module.exports = {
   serverPort: port,
@@ -20,4 +21,5 @@ module.exports = {
     type: `${nodeEnv} database`,
   },
   reactType,
+  logFormat,
 };

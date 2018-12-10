@@ -67,11 +67,28 @@ function getId (bodyData) {
   return id;
 }
 
+function formatId (id) {
+  let formattedId;
+  if (isHex(id)) {
+    try {
+      formattedId = new ObjectId(id);
+    }
+    catch (error) {
+      console.error(`\nCould not parse _id in the function formatId.\n\nError:\n${error.message}\n`);
+      formattedId = null;
+    }
+  } else {
+    formattedId = null;
+  }
+  return formattedId;
+}
+
 let utils = {
-  getFormData: getFormData,
-  getId: getId,
-  checkProperty: checkProperty,
-  isObject: isObject
+  getFormData,
+  getId,
+  formatId,
+  checkProperty,
+  isObject
 };
 
 module.exports = utils;
