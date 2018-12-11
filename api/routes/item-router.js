@@ -9,12 +9,12 @@ const itemRouter = express.Router();
 
 const loginPath = '/api/auth/signin';
 
-
 // ROUTES
 
 itemRouter.get('/items/:item', itemController.readOne);
 
-itemRouter.route('/items')
+itemRouter
+  .route('/items')
 
   .get(itemController.read)
 
@@ -23,6 +23,5 @@ itemRouter.route('/items')
   .put(ensureLogin(loginPath), itemController.update)
 
   .delete(ensureLogin(loginPath), itemController.remove);
-
 
 module.exports = itemRouter;

@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/chingu-voyage7/Bears-Team-08#readme",
   "dependencies": {
+    "cloudinary": "^1.11.0",
     "babel-preset-env": "^1.7.0",
     "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",

@@ -2,6 +2,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import ImageComponent from '../image/ImageComponent';
 
 const styles = theme => ({
   paper: {
@@ -24,7 +25,9 @@ const PhotoCard = props => {
   return (
     <Grid item xs={12} md={4}>
       <Paper className={classes.paperContainer}>
-        <Paper className={classes.paper}>Photo</Paper>
+        <Paper className={classes.paper}>
+          <ImageComponent />
+        </Paper>
         <Paper className={classes.paper}>Rating</Paper>
         <Paper className={classes.paper}>Items Bought</Paper>
         <Paper className={classes.paper}>Items Sold</Paper>
