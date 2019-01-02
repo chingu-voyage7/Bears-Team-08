@@ -1,16 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { Paper, Typography, Grid, Button } from '@material-ui/core';
+import { Paper } from '@material-ui/core';
 
 import BuyItem from './BuyItem';
 import ItemDetails from './ItemDetails';
 import Questions from './Questions';
 
-// simula uma api call
-import { item } from '../../mock';
-
-const styles = theme => ({
+const styles = () => ({
   divMain: {
     backgroundColor: '#eee',
     paddingBottom: '30px',
