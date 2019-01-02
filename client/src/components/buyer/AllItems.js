@@ -75,7 +75,7 @@ class AllItems extends Component {
               <img
                 className={classes.image}
                 src="https://http2.mlstatic.com/macbooks-D_Q_NP_804475-MLB28289378721_102018-Q.webp"
-                alt="title"
+                alt={item.title}
               />
               <p>R$ 4200</p>
               <p>Macbook Air, Intel Core I5,8gb,128gb,tela 13,3 - Mqd32bz/a</p>
