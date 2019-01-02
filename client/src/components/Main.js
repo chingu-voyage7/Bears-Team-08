@@ -20,8 +20,8 @@ const Main = () => (
     <Route path="/confirm-email" component={EmailConfirmation} />
     <Route path="/success-email/:email/:token" component={EmailSuccess} />
     <Route path="/success-password" component={PasswordSuccess} />
-    <Route exact path="/products" component={AllItems} />
-    <Route exact path="/product/:itemId" component={Item} />
+    <Route exact path="/items" component={AllItems} />
+    <Route exact path="/items/:itemId" component={Item} />
     <Route exact path="/" component={Home} />
   </div>
 );
