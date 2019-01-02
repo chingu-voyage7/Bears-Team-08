@@ -22,4 +22,25 @@ export const item = {
   id: 1, // item id
 };
 
-export const nothing = 0;
+export const all = [
+  {
+    title: 'macbook air',
+    price: 4000,
+    img: null,
+  },
+  {
+    title: 'ipad',
+    price: 1200,
+    img: null,
+  },
+  {
+    title: 'windows phone',
+    price: 2340,
+    img: null,
+  },
+  {
+    title: 'galaxy note',
+    price: 3340,
+    img: null,
+  },
+];

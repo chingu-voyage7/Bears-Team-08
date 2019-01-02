@@ -6,6 +6,8 @@ import { Paper, Typography, Grid, Button } from '@material-ui/core';
 import BuyItem from './BuyItem';
 import ItemDetails from './ItemDetails';
 import Questions from './Questions';
+
+// simula uma api call
 import { item } from '../../mock';
 
 const styles = theme => ({

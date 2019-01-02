@@ -9,6 +9,7 @@ import PasswordSuccess from './auth/PasswordSuccess';
 import EmailSuccess from './auth/EmailSuccess';
 import EmailConfirmation from './auth/EmailConfirmation';
 import Item from './buyer/Item';
+import AllItems from './buyer/AllItems';
 
 const Main = () => (
   <div>
@@ -19,7 +20,8 @@ const Main = () => (
     <Route path="/confirm-email" component={EmailConfirmation} />
     <Route path="/success-email/:email/:token" component={EmailSuccess} />
     <Route path="/success-password" component={PasswordSuccess} />
-    <Route path="/product/:itemId" component={Item} />
+    <Route exact path="/products" component={AllItems} />
+    <Route exact path="/product/:itemId" component={Item} />
     <Route exact path="/" component={Home} />
   </div>
 );
