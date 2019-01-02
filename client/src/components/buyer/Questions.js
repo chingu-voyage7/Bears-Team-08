@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { Paper, Typography, Grid, Button } from '@material-ui/core';
+import { Paper, Grid } from '@material-ui/core';
 
-import BuyItem from './BuyItem';
-import ItemDetails from './ItemDetails';
 import { item } from '../../mock';
 
-const styles = theme => ({
+const styles = () => ({
   divMain: {
     backgroundColor: '#eee',
   },
@@ -38,7 +36,7 @@ const styles = theme => ({
   },
   answer: {
     color: 'blue',
-  }
+  },
 });
 
 const Item = props => {
