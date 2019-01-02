@@ -8,21 +8,22 @@ import ChangePassword from './auth/ChangePassword';
 import PasswordSuccess from './auth/PasswordSuccess';
 import EmailSuccess from './auth/EmailSuccess';
 import EmailConfirmation from './auth/EmailConfirmation';
+import Item from './buyer/Item';
+import AllItems from './buyer/AllItems';
 
-const Main = () => {
-
-  return (
-    <div>
-      <Route path="/signin" component={SignIn} />
-      <Route path="/register" component={Register} />
-      <Route path="/forgot-password" component={ForgotPassword} />
-      <Route path="/change-password/:email/:token" component={ChangePassword} />
-      <Route path="/confirm-email" component={EmailConfirmation} />
-      <Route path="/success-email/:email/:token" component={EmailSuccess} />
-      <Route path="/success-password" component={PasswordSuccess} />
-      <Route exact path="/" component={Home} />
-    </div>
-  );
-};
+const Main = () => (
+  <div>
+    <Route path="/signin" component={SignIn} />
+    <Route path="/register" component={Register} />
+    <Route path="/forgot-password" component={ForgotPassword} />
+    <Route path="/change-password/:email/:token" component={ChangePassword} />
+    <Route path="/confirm-email" component={EmailConfirmation} />
+    <Route path="/success-email/:email/:token" component={EmailSuccess} />
+    <Route path="/success-password" component={PasswordSuccess} />
+    <Route exact path="/products" component={AllItems} />
+    <Route exact path="/product/:itemId" component={Item} />
+    <Route exact path="/" component={Home} />
+  </div>
+);
 
 export default Main;

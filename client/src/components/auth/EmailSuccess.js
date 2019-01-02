@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
@@ -8,6 +8,7 @@ import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import { ConfigContext } from '../../context';
 
 const styles = theme => ({
   main: {
@@ -47,6 +48,7 @@ const styles = theme => ({
 });
 
 const EmailSuccess = props => {
+  const {config} = useContext(ConfigContext)
   const [user, setUser] = useState({ email: '', token: '' });
 
   const call = async () => {
@@ -57,15 +59,20 @@ const EmailSuccess = props => {
       },
       body: JSON.stringify({ email: user.email, token: user.token }),
     };
-    await setUser(props.match.params)
-    await fetch(`http://localhost:3000/api/auth/email-token-confirmation`,
-      options)
-  }
+    await setUser(props.match.params);
+    await fetch(
+      `${config.url}/api/auth/email-token-confirmation`,
+      options,
+    );
+  };
 
-  useEffect(async () => {
-    call();
-    return () => console.log('unmounting');
-  }, [user])
+  useEffect(
+    async () => {
+      call();
+      return () => console.log('unmounting');
+    },
+    [user],
+  );
 
   const { classes } = props;
 

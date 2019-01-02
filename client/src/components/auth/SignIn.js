@@ -14,7 +14,7 @@ import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { UserContext } from '../../context/User';
+import { ConfigContext, UserContext } from '../../context';
 
 const styles = theme => ({
   main: {
@@ -53,6 +53,7 @@ const styles = theme => ({
 });
 
 const SignIn = props => {
+  const api = useContext(ConfigContext);
   let { state, dispatch } = useContext(UserContext);
   const [redirect, setRedirect] = useState(false);
   const { classes } = props;
@@ -78,12 +79,17 @@ const SignIn = props => {
     };
 
     await e.preventDefault();
-
-    const res = await fetch(`http://localhost:3000/api/auth/signin`, options);
+    const res = await fetch(
+      `${api.config.url}/api/auth/signin`,
+      options,
+    );
 
     if (res.status === 200) {
       await dispatch({ type: 'signIn' });
-      await localStorage.setItem('user', JSON.stringify({ ...state, isLoggedIn: true }));
+      await localStorage.setItem(
+        'user',
+        JSON.stringify({ ...state, isLoggedIn: true }),
+      );
       await setRedirect(true);
     }
   };

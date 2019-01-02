@@ -1,13 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { UserProvider } from './context/User';
+import { UserProvider, ConfigProvider } from './context';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
-  <UserProvider>
-    <App />
-  </UserProvider>,
+  <ConfigProvider>
+    <UserProvider>
+      <App />
+    </UserProvider>
+  </ConfigProvider>,
   document.getElementById('root'),
 );
 

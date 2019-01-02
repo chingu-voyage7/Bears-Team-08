@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { ConfigContext } from '../../context';
 import { Redirect } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -54,7 +55,6 @@ class Register extends Component {
   };
 
   _setRedirect = () => {
-    console.log('redirect');
     this.setState({
       redirect: true,
     });
@@ -64,9 +64,11 @@ class Register extends Component {
     if (this.state.redirect) {
       return <Redirect to="/confirm-email" />;
     }
+    return false;
   };
 
   _handleSubmit = async user => {
+    const {url} = this.context.config;
     const validated = await this._validateForm(user);
     const options = {
       method: 'POST',
@@ -78,48 +80,44 @@ class Register extends Component {
 
     if (validated) {
       const res = await fetch(
-        `http://localhost:3000/api/auth/register`,
+        `${url}/api/auth/register`,
         options,
       );
       if (res.status === 200) {
         await this._setRedirect();
         await fetch(
-          `http://localhost:3000/api/auth/email-confirmation`,
+          `${url}/api/auth/email-confirmation`,
           options,
         );
       }
     }
   };
 
-  _validateForm = async user => {
-    // fill in later
-    console.log(user, 'validate');
-    return true;
-  };
+  _validateForm = async () => true;
 
   render() {
     const { classes } = this.props;
 
     return (
-      <React.Fragment>
-        {this._renderRedirect()}
-        <CssBaseline />
-        <main className={classes.layout}>
-          <Paper className={classes.paper}>
-            <Avatar className={classes.avatar}>
-              <LockIcon />
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Register
-            </Typography>
-            <RegistrationForm
-              className={classes.form}
-              handleSubmit={this._handleSubmit}
-              validateForm={this._validateForm}
-            />
-          </Paper>
-        </main>
-      </React.Fragment>
+            <React.Fragment>
+            {this._renderRedirect()}
+            <CssBaseline />
+            <main className={classes.layout}>
+              <Paper className={classes.paper}>
+                <Avatar className={classes.avatar}>
+                  <LockIcon />
+                </Avatar>
+                <Typography component="h1" variant="h5">
+                  Register
+                </Typography>
+                <RegistrationForm
+                  className={classes.form}
+                  handleSubmit={this._handleSubmit}
+                  validateForm={this._validateForm}
+                  />
+              </Paper>
+            </main>
+          </React.Fragment>
     );
   }
 }
@@ -127,5 +125,7 @@ class Register extends Component {
 Register.propTypes = {
   classes: PropTypes.object.isRequired,
 };
+
+Register.contextType = ConfigContext
 
 export default withStyles(styles)(Register);

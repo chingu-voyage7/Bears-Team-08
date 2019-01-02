@@ -1,4 +1,6 @@
 const passport = require('passport');
+const LocalStrategy = require('passport-local').Strategy;
+
 // const config = require('config');
 // const FBStrategy = require('passport-facebook').Strategy;
 const models = require('../api/models');
@@ -8,6 +10,34 @@ const { User } = models;
 // const fbAppId = config.fb.appID;
 // const fbAppSecret = config.fb.appSecret;
 // const fbCallbackURL = config.fb.callbackURL;
+
+// passport local strategy
+const localStrategy = new LocalStrategy(
+  { usernameField: 'email' },
+  (email, password, done) => {
+    return User.findOne({ email }, (error, user) => {
+      if (error) {
+        return done(error);
+      }
+      if (!user) {
+        return done(null, false, { message: 'Incorrect email or password.' });
+      }
+      return user.isCorrectPassword(password, (e, same) => {
+        if (e) {
+          return done(e);
+        }
+        if (!same) {
+          return done(null, false, {
+            message: 'Incorrect email or password.',
+          });
+        }
+        return done(null, user);
+      });
+    });
+  },
+);
+
+passport.use(localStrategy);
 
 passport.serializeUser((user, done) => {
   done(null, user.id);

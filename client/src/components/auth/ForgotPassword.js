@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
@@ -11,6 +11,7 @@ import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import { ConfigContext } from '../../context';
 
 const styles = theme => ({
   main: {
@@ -49,10 +50,10 @@ const styles = theme => ({
 });
 
 const ForgotPassword = props => {
+  const {config} = useContext(ConfigContext);
   const [email, setEmail] = useState();
   const [redirect, setRedirect] = useState(false);
   const { classes } = props;
-
 
   const _renderRedirect = () => {
     if (redirect) {
@@ -71,14 +72,14 @@ const ForgotPassword = props => {
     };
 
     const res = await fetch(
-      `http://localhost:3000/api/auth/reset-password`,
+      `${config.url}/api/auth/reset-password`,
       options,
     );
 
     if (res.status === 200) {
       setRedirect(true);
+    }
   };
-}
 
   return (
     <main className={classes.main}>
